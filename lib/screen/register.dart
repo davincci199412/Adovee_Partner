@@ -37,9 +37,7 @@ class _RegisterState extends State<Register> {
           padding: EdgeInsets.all(10),
           child: Center(
 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: ListView(
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,

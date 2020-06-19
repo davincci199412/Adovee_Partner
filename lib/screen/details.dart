@@ -1,6 +1,6 @@
-import 'package:adovee_partner/screen/service.dart';
+import 'package:adovee/screen/service.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/global.dart';
+import 'package:adovee/global.dart';
 
 class DetailsScreen extends StatelessWidget {
   final int id;

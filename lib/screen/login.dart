@@ -1,5 +1,5 @@
-import 'package:adovee_partner/screen/profile.dart';
-import 'package:adovee_partner/screen/register.dart';
+import 'package:adovee/screen/profile.dart';
+import 'package:adovee/screen/register.dart';
 import 'package:flutter/material.dart';
 
 

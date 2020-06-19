@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/screen/home.dart';
-import 'package:syncfusion_flutter_core/core.dart';
+import 'package:adovee/screen/home.dart';
 
 void main() {
-  //SyncfusionLicense.registerLicense('ADD YOUR LICENCE KEY HERE');
   runApp(MyApp());
 }
 

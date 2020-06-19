@@ -1,23 +1,40 @@
-import 'package:adovee_partner/screen/favourite.dart';
-import 'package:adovee_partner/screen/logindetail.dart';
-import 'package:adovee_partner/screen/marketing.dart';
-import 'package:adovee_partner/screen/overview.dart';
+import 'package:adovee/screen/search.dart';
 import 'package:flutter/material.dart';
+import 'package:adovee/global.dart';
+import 'package:adovee/screen/details.dart';
 
-class DashboardPage extends StatefulWidget {
+class Dashboard extends StatefulWidget {
   @override
-  _DashboardPageState createState() => _DashboardPageState();
+  _DashboardState createState() => _DashboardState();
 }
  
-class _DashboardPageState extends State<DashboardPage> {
-  TextEditingController nameController = TextEditingController();
+class _DashboardState extends State<Dashboard> {
+  TextEditingController _searchController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
  
+  FocusNode _textFocus = new FocusNode();
+
+  void onChange()
+  {
+    bool hasFocus = _textFocus.hasFocus;
+    //do your text transforming
+    if (hasFocus) 
+    {
+      hasFocus = false;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => SearchPage(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _textFocus.addListener(onChange);
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
+        appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0), // here the desired height
           child: AppBar(
             iconTheme: IconThemeData(
@@ -25,74 +42,213 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Home",
+              "Book what you love",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(50),
-            child: new Image(image: AssetImage('assets/images/logo.png')),
-          ),
-
-          dashboardButton(new Icon(Icons.widgets), 'Overview', 0),
-          dashboardButton(new Icon(Icons.compare_arrows), 'Online Book', 1),
-          dashboardButton(new Icon(Icons.attach_money), 'Marketing', 2),
-          dashboardButton(new Icon(Icons.credit_card), 'Card Processing', 3),
-          dashboardButton(new Icon(Icons.chat), 'Client Message', 4),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 32,
-          ),
-          dashboardButton(new Icon(Icons.lightbulb_outline), 'Contact Support', 5),
-          dashboardButton(new Icon(Icons.help_outline), 'Help Center', 6),
-          dashboardButton(new Icon(Icons.exit_to_app), 'Logout', 4),
-        ],
-      ),
-    );
-  }
-  
-  Widget dashboardButton(Icon icon, String str, int buttonIndex)
-  {
-    return Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-      height: MediaQuery.of(context).size.height / 11,
-      child: new RaisedButton(
-        color: Colors.white,
-        onPressed: () {
-          switch (buttonIndex) {
-            case 0:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => OverviewPage()),
-              );   
-              break;
-            case 2:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MarketingPage()),
-              );   
-              break;
-            default:
-          }
-        },
-        padding: EdgeInsets.all(8.0),
-        child: Align(
-            alignment: Alignment.centerLeft,
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+        body: Padding(
+            padding: EdgeInsets.all(10),
+            child: ListView(
               children: <Widget>[
-                icon,
-                new Text('  ' + str),
+                
+                // Container(
+                //   padding: EdgeInsets.all(10),
+                //   child: Text(
+                //       'Book what you love',
+                //       style: TextStyle(fontSize: 20),
+                //   ),
+                // ),
+
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: "Search",
+                      hintText: "Search for a service or venue",
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: _searchController.text.isEmpty
+                          ? null
+                          : InkWell(
+                              onTap: () => _searchController.clear(),
+                              child: Icon(Icons.clear),
+                            ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    focusNode: _textFocus,
+                  ),
+                ),
+
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                      'Hotel Booking',
+                      style: TextStyle(fontSize: 30),
+                  ),
+                ),
+                
+                Container(
+                  padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.width - 60,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: destinationsList.length,
+                    itemBuilder: (ctx, i) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => DetailsScreen(id: i),
+                          ),
+                        ),
+                        //onTap: () => {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 60,
+                          margin:
+                              EdgeInsets.fromLTRB(0, 10, 10, 10),
+                              //const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5.0),
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned.fill(
+                                  // child: Image.network(
+                                  //   destinationsList[i].imageUrl,
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  child: new Image(image: AssetImage('assets/images/login.png')),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 9.0, vertical: 5.0),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff0078d4),
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(15),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                            "${destinationsList[i].placeName}",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                        Text(
+                                          "${destinationsList[i].date}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2
+                                              .apply(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                      'Hotel Booking',
+                      style: TextStyle(fontSize: 30),
+                  ),
+                ),
+                
+                Container(
+                  padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.width - 60,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: destinationsList.length,
+                    itemBuilder: (ctx, i) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => DetailsScreen(id: i),
+                          ),
+                        ),
+                        //onTap: () => {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 60,
+                          margin:
+                              EdgeInsets.fromLTRB(0, 10, 10, 10),
+                              //const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5.0),
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned.fill(
+                                  // child: Image.network(
+                                  //   destinationsList[i].imageUrl,
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  child: new Image(image: AssetImage('assets/images/logo.png')),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 9.0, vertical: 5.0),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff0078d4),
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(15),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                            "${destinationsList[i].placeName}",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                        Text(
+                                          "${destinationsList[i].date}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2
+                                              .apply(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              
               ],
-            ),
-          )
-      ),
-    );
-  } 
+            )
+        ),
+
+      );
+  
+  }
 }

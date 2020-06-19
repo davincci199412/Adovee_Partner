@@ -1,9 +1,7 @@
-import 'package:adovee_partner/screen/calendar.dart';
-import 'package:adovee_partner/screen/client.dart';
-import 'package:adovee_partner/screen/notification.dart';
-import 'package:adovee_partner/screen/sales.dart';
+import 'package:adovee/screen/logindetail.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/screen/profile.dart';
+import 'package:adovee/screen/dashboard.dart';
+import 'package:adovee/screen/profile.dart';
 
 class Home extends StatefulWidget {
   
@@ -39,22 +37,14 @@ class _HomeState extends State<Home> {
 
     switch(_currentIndex) {
       case 0:
-        child = MyHomePage();
+        child = Dashboard();
         break;
 
       case 1:
-        child = SalesPage();
+        child = LoginDetailPage();
         break;
 
       case 2:
-        child = ClientPage();
-        break;
-
-      case 3:
-        child = NotificationPage();
-        break;
-
-      case 4:
         child = Profile();
         break;
     }
@@ -63,32 +53,22 @@ class _HomeState extends State<Home> {
     return Scaffold(
         body: SizedBox.expand(child: child),
         bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.note),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.more_vert),
+              icon: Icon(Icons.account_box),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
           ],
           currentIndex: _currentIndex,
           selectedItemColor: Colors.amber[800],
-          unselectedItemColor: Colors.black38,
           onTap:(newIndex) => setState((){_currentIndex = newIndex;}),
         ),
       );

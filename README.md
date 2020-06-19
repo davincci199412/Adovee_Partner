@@ -1,4 +1,4 @@
-# adovee_partner
+# adovee
 
 A new Flutter project.
 

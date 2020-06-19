@@ -1,6 +1,6 @@
-import 'package:adovee_partner/screen/favourite.dart';
+import 'package:adovee/screen/favourite.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/screen/register.dart';
+import 'package:adovee/screen/register.dart';
 
 class PaymentPage extends StatefulWidget {
   @override

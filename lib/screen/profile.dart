@@ -1,11 +1,9 @@
-import 'package:adovee_partner/screen/chart.dart';
-import 'package:adovee_partner/screen/dashboard.dart';
-import 'package:adovee_partner/screen/editprofile.dart';
-import 'package:adovee_partner/screen/offline.dart';
+import 'package:adovee/screen/dashboard.dart';
+import 'package:adovee/screen/editprofile.dart';
+import 'package:adovee/screen/offline.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/screen/payments.dart';
-import 'package:adovee_partner/screen/overview.dart';
-
+import 'package:adovee/screen/settings.dart';
+import 'package:adovee/screen/payments.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -23,12 +21,12 @@ class _ProfileState extends State<Profile> {
       body: ListView(
         children: <Widget>[
           profileAvatar(),
-          profileButton(new Icon(Icons.home), 'Home', 0),
-          //profileButton(new Icon(Icons.business_center), 'Staff', 1),
-          profileButton(new Icon(Icons.local_laundry_service), 'Services', 2),
-          profileButton(new Icon(Icons.payment), 'Inventory', 3),
-          profileButton(new Icon(Icons.format_list_bulleted), 'Analytics', 4),
-          profileButton(new Icon(Icons.settings), 'Setup', 5),
+          profileButton(new Icon(Icons.calendar_today), 'Appointments', 0),
+          profileButton(new Icon(Icons.favorite_border), 'Favourite', 1),
+          profileButton(new Icon(Icons.settings), 'Settings', 2),
+          profileButton(new Icon(Icons.payment), 'Payment methods', 3),
+          profileButton(new Icon(Icons.lightbulb_outline), 'Customer support', 4),
+          profileButton(new Icon(Icons.exit_to_app), 'Logout', 5),
         ],
       ),
     );
@@ -98,7 +96,7 @@ class _ProfileState extends State<Profile> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DashboardPage()),
+                    builder: (context) => Dashboard()),
               );   
               break;
             case 1: 
@@ -108,25 +106,18 @@ class _ProfileState extends State<Profile> {
                     builder: (context) => OfflinePage()),
               );   
               break;
-            // case 2:    
-            //   // Navigator.push(
-            //   //   context,
-            //   //   MaterialPageRoute(
-            //   //       builder: (context) => SettingPage()),
-            //   // );   
-            //   break;
-            // case 3:    
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => PaymentPage()),
-            //   );   
-            //   break;
-            case 4:    
+            case 2:    
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ChartPage(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.width,)),
+                    builder: (context) => SettingPage()),
+              );   
+              break;
+            case 3:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PaymentPage()),
               );   
               break;
             default:

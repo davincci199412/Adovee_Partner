@@ -1,7 +1,5 @@
-import 'package:adovee_partner/screen/profile.dart';
-
+import 'package:adovee_partner/screen/servicedetail.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:adovee_partner/global.dart';
 
 import 'package:http/http.dart' as http;
@@ -11,82 +9,63 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'dart:io';
 
-class EditProfilePage extends StatefulWidget {
+import 'package:flutter/services.dart';
+
+class SmtpServerUpdatePage extends StatefulWidget {
+  final int id;
+
+  const SmtpServerUpdatePage({Key key, this.id}) : super(key: key);
+  
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _SmtpServerUpdatePageState createState() => _SmtpServerUpdatePageState();
 }
  
-class _EditProfilePageState extends State<EditProfilePage> {
+class _SmtpServerUpdatePageState extends State<SmtpServerUpdatePage> {
  
-  final GlobalKey<FormState> _editProfilePageKey = GlobalKey<FormState>();
-  String _firstName;
-  String _lastName;
-  String _email = "sdfgfdg";
-  String _mobile;
+  final GlobalKey<FormState> _smtpServerUpdateKey = GlobalKey<FormState>();
+  String _from;
+  String _username;
+  String _password;
+  String _host;
+  int _port;
 
   String message;
 
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG');
-
-  void showDialog() {
-    showGeneralDialog(
-      barrierLabel: "Barrier",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 700),
-      context: context,
-      pageBuilder: (_, __, ___) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 300,
-            child: SizedBox.expand(child: FlutterLogo()),
-            margin: EdgeInsets.only(bottom: 50, left: 12, right: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(40),
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (_, anim, __, child) {
-        return SlideTransition(
-          position: Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Future<dynamic> updateCompanyDetails() async {
+  Future<dynamic> setSmtpServer() async {
     final http.Response response = await http.post(
-      baseUrl + 'company/updatecompanydetails',
+      baseUrl + 'smtpserver/setsmtpserver',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
       },
-      body: jsonEncode(<String, String>{
-        'FirstName': _firstName,
-        'LastName': _lastName,
-        'Email': _email,
-        'Mobile': _mobile,
+      body: jsonEncode(<String, dynamic>{
+        'SmtpServerId': 4,
+        'From': _from,
+        'Username': _username,
+        'Password': _password,
+        'Host': _host,
+        'SmtpPort': _port
       }),
     );
-    //final body = json.decode(response.body);
+    //print(json.decode(response.body));
+    print('-0--------------------------------------------0-');
     print(response.statusCode);
-    // print(json.decode(response.headers));
+    
     if (response.statusCode == 200) {
-      
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Profile()),
+            builder: (context) => ServiceDetailPage(id: widget.id),
+        )
       );
-      message = 'Go to your email';
+      message = 'Service update success';
     }
     else {
-      message = 'Update failed.';
+      //final body = json.decode(response.body);
+      // message = body['message'];
+      message = 'Service update failed';
     }
 
     Fluttertoast.showToast(
@@ -99,8 +78,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         fontSize: 16.0
       );
     return response;
+      
   }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,14 +94,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Edit profile",
+              "Set SMTP Server",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: SafeArea(
           child: Form(
-            key: _editProfilePageKey,
+            key: _smtpServerUpdateKey,
             child: Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -139,16 +118,68 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'First Name',
+                            labelText: 'FROM',
                           ),
 
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter first name';
+                              return 'Please enter from';
                             }
                             return null;
                           },
-                          onSaved: (value) => _firstName = value,
+                          onSaved: (value) => _from = value,
+                        ),
+                      ),
+
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter username';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                          
+                            border: OutlineInputBorder(),
+                            labelText: 'Username',
+                          ),
+                          onSaved: (value) => _username = value,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _password = value,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter host';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                          
+                            border: OutlineInputBorder(),
+                            labelText: 'Host',
+                          ),
+                          onSaved: (value) => _host = value,
                         ),
                       ),
                       Container(
@@ -156,56 +187,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Last Name',
+                            labelText: 'Port',
                           ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter last name';
+                              return 'Please enter Port';
                             }
                             return null;
                           },
-                          onSaved: (value) => _lastName = value,
+                          onSaved: (value) => _port = int.parse(value),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: InternationalPhoneNumberInput(
-                          onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
-                            _mobile = number.phoneNumber;
-                          },
-                          onInputValidated: (bool value) {
-                            print(value);
-                          },
-                          ignoreBlank: false,
-                          autoValidate: false,
-                          selectorTextStyle: TextStyle(color: Colors.black),
-                          initialValue: number,
-                          inputBorder: OutlineInputBorder(),
-                        ),
-                      ),
-                      Container(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter email address';
-                              }
-                              if(!value.contains('@')) {
-                                return 'Not a vaild email address';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                            
-                              border: OutlineInputBorder(),
-                              labelText: 'Email Address',
-                            ),
-                            onSaved: (value) => _email = value,
-                          ),
-                        ),
                       
-
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 70,
@@ -216,11 +211,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             child: Text('Save'),
                             onPressed: () {
                               //showDialog();
-                              if (_editProfilePageKey.currentState.validate()) {
+                              if (_smtpServerUpdateKey.currentState.validate()) {
                                 // If the form is valid, display a Snackbar.
-                                _editProfilePageKey.currentState.save();
+                                _smtpServerUpdateKey.currentState.save();
 
-                                updateCompanyDetails();
+                                // updateCompanyDetails();
+                                setSmtpServer();
                               }
                             },
                           )),

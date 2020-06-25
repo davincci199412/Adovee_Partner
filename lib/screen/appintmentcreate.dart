@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+//import 'dart:async';
 
 class CreateAppointmentPage extends StatefulWidget {
   @override
@@ -14,7 +15,27 @@ class _CreateAppointmentPageState extends State<CreateAppointmentPage> {
 
   final TextEditingController controller = TextEditingController();
   
-
+  DateTime _startDate = DateTime.now();
+  DateTime _endDate = DateTime.now().add(Duration(days: 7));
+  
+  Future displayDateRangePicker(BuildContext context) async {
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: _startDate, 
+      initialLastDate: _endDate, 
+      firstDate: new DateTime(DateTime.now().year - 50), 
+      lastDate: new DateTime(DateTime.now().year + 50)
+      );
+    if(picked != null && picked.length == 2) {
+      setState(() {
+        _startDate = picked[0];
+        _endDate = picked[1];
+      });
+      print(picked);
+      
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +58,6 @@ class _CreateAppointmentPageState extends State<CreateAppointmentPage> {
           child: Center(
 
             child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              //mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,
@@ -106,30 +124,10 @@ class _CreateAppointmentPageState extends State<CreateAppointmentPage> {
                       textColor: Colors.white,
                       color: Color(0xff0078d4),
                       child: Text('Save'),
-                      // onPressed: () {
-                      //   print(nameController.text);
-                      //   print(passwordController.text);
-
-                      // },
-                  //     onPressed: () async {
-                  //       final List<DateTime> picked = await DateRagePicker.showDatePicker(
-                  //           context: context,
-                  //           initialDate: new DateTime.now(),
-                  // firstDate:
-                  //     new DateTime.now().subtract(new Duration(days: 30)),
-                  // lastDate: new DateTime.now().add(new Duration(days: 30)),
-                  //       );
-                  //       if (picked != null && picked.length == 2) {
-                  //           print(picked);
-                  //       }
-                  //     },
-                      onPressed: () => showDatePicker(
-                        context: context,
-                        initialDate: new DateTime.now(),
-                        firstDate:
-                            new DateTime.now().subtract(new Duration(days: 30)),
-                        lastDate: new DateTime.now().add(new Duration(days: 30)),
-                      ),
+                      
+                      onPressed: () async {
+                        await displayDateRangePicker(context);
+                      },
                     )),
               ],
             )

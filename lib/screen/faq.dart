@@ -1,5 +1,4 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createservice.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
@@ -10,35 +9,33 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ServicePage extends StatefulWidget {
+class FaqPage extends StatefulWidget {
   @override
-  _ServicePageState createState() => _ServicePageState();
+  _FaqPageState createState() => _FaqPageState();
 }
  
-class _ServicePageState extends State<ServicePage> {
-
-  
+class _FaqPageState extends State<FaqPage> {
   TextEditingController _searchController = TextEditingController();
   
-  int smsBalance;
-  Future<dynamic> getServices() async {
+  Future<dynamic> getFaq() async {
     final response = await http.get(
-      baseUrl + 'service/getservices',
+      baseUrl + 'faq/getfaq',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
+    print(response.statusCode);
+
     if (response.statusCode == 200)
     {
+      //print(json.decode(response.body));
       var body = json.decode(response.body);
       setState(() {
-        services = body['services'];
+        faqs = body;
+        // print('00000000000000000000000000000000000');
+        // print(faqs);
       });
-      // setState(() {
-      //   // companyEmployees = body['employees'];
-      // });
     }
     else 
     {
-      print(response.statusCode);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -48,6 +45,33 @@ class _ServicePageState extends State<ServicePage> {
     return response;
   }
 
+  // Future<dynamic> searchCustomers(String str) async {
+  //   final response = await http.get(
+  //     baseUrl + 'customer/searchcustomers?Query=' + str,
+  //     headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+  //   );
+  //   print(response.statusCode);
+
+  //   if (response.statusCode == 200)
+  //   {
+  //     //print(json.decode(response.body));
+  //     var body = json.decode(response.body);
+  //     setState(() {
+  //       resultCustomers = body['customers'];
+  //     });
+  //   }
+  //   else 
+  //   {
+  //     // Navigator.push(
+  //     //   context,
+  //     //   MaterialPageRoute(
+  //     //       builder: (context) => OfflinePage()),
+  //     // );
+
+  //   }
+  //   return response;
+  // }
+
   Widget searchBox()
   {
     return Container(
@@ -56,7 +80,7 @@ class _ServicePageState extends State<ServicePage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Service",
+          hintText: "Search Faq",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -70,26 +94,28 @@ class _ServicePageState extends State<ServicePage> {
             ),
           ),
         ),
+        onChanged: (value) {
+          // searchCustomers(value);
+        },
       ),
     );   
   }
-  Widget serviceList(BuildContext context)
+  Widget customerList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(services != null)
-    {
-      for(var i = 0; i < services.length; i++){
-        list.add(titleContentButton(context, services[i]['serviceTitle'], services[i]['price'].toString(), 'service', i));
-      }
-    }
+    // if (resultCustomers != null) {
+    //   for(var i = 0; i < resultCustomers.length; i++){
+    //     list.add(titleContentButton(context, resultCustomers[i]['fullName'], resultCustomers[i]['mobile'], 'customer',i));
+    //   }
+    // }
     
     return new ListView(children: list);
   }
 
   @override
   Widget build(BuildContext context) {
-    getServices();
+    getFaq();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -100,26 +126,26 @@ class _ServicePageState extends State<ServicePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Services",
+              "Faq",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: serviceList(context),
+            child: customerList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreateServicePage()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => CreateCustomerPage()),
+            // );
 
           },
-          tooltip: 'Create service',
+          tooltip: 'Create customer',
           ),
       ), 
       onWillPop: () async {

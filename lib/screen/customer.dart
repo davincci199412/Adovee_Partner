@@ -1,5 +1,5 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createservice.dart';
+import 'package:adovee_partner/screen/createcustomer.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
@@ -10,40 +10,62 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ServicePage extends StatefulWidget {
+class CustomerPage extends StatefulWidget {
   @override
-  _ServicePageState createState() => _ServicePageState();
+  _CustomerPageState createState() => _CustomerPageState();
 }
  
-class _ServicePageState extends State<ServicePage> {
-
-  
+class _CustomerPageState extends State<CustomerPage> {
   TextEditingController _searchController = TextEditingController();
   
-  int smsBalance;
-  Future<dynamic> getServices() async {
+  Future<dynamic> getCustomers() async {
     final response = await http.get(
-      baseUrl + 'service/getservices',
+      baseUrl + 'customer/getcustomers',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
       setState(() {
-        services = body['services'];
+        customers = body['customers'];
+        resultCustomers = customers;
       });
-      // setState(() {
-      //   // companyEmployees = body['employees'];
-      // });
     }
     else 
     {
-      print(response.statusCode);
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => OfflinePage()),
       );
+    }
+    return response;
+  }
+
+  Future<dynamic> searchCustomers(String str) async {
+    final response = await http.get(
+      baseUrl + 'customer/searchcustomers?Query=' + str,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+    );
+    print(response.statusCode);
+
+    if (response.statusCode == 200)
+    {
+      //print(json.decode(response.body));
+      var body = json.decode(response.body);
+      setState(() {
+        resultCustomers = body['customers'];
+      });
+      print(resultCustomers);
+    }
+    else 
+    {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => OfflinePage()),
+      // );
+
     }
     return response;
   }
@@ -56,7 +78,7 @@ class _ServicePageState extends State<ServicePage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Service",
+          hintText: "Search by Reference or Customer",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -70,17 +92,19 @@ class _ServicePageState extends State<ServicePage> {
             ),
           ),
         ),
+        onChanged: (value) {
+          searchCustomers(value);
+        },
       ),
     );   
   }
-  Widget serviceList(BuildContext context)
+  Widget customerList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(services != null)
-    {
-      for(var i = 0; i < services.length; i++){
-        list.add(titleContentButton(context, services[i]['serviceTitle'], services[i]['price'].toString(), 'service', i));
+    if (resultCustomers != null) {
+      for(var i = 0; i < resultCustomers.length; i++){
+        list.add(titleContentButton(context, resultCustomers[i]['fullName'], resultCustomers[i]['mobile'], 'customer',i));
       }
     }
     
@@ -89,7 +113,7 @@ class _ServicePageState extends State<ServicePage> {
 
   @override
   Widget build(BuildContext context) {
-    getServices();
+    getCustomers();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -100,14 +124,14 @@ class _ServicePageState extends State<ServicePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Services",
+              "Customer",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: serviceList(context),
+            child: customerList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -115,11 +139,11 @@ class _ServicePageState extends State<ServicePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateServicePage()),
+                  builder: (context) => CreateCustomerPage()),
             );
 
           },
-          tooltip: 'Create service',
+          tooltip: 'Create customer',
           ),
       ), 
       onWillPop: () async {

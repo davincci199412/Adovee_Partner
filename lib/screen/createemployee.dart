@@ -1,22 +1,24 @@
-import 'package:adovee_partner/screen/login.dart';
+import 'package:adovee_partner/screen/employee.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:adovee_partner/global.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class Register extends StatefulWidget {
+class CreateEmployeePage extends StatefulWidget {
   @override
-  _RegisterState createState() => _RegisterState();
+  _CreateEmployeePageState createState() => _CreateEmployeePageState();
 }
  
-class _RegisterState extends State<Register> {
+class _CreateEmployeePageState extends State<CreateEmployeePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
  
-  final _registerKey = GlobalKey<FormState>();
+  final _createAccountKey = GlobalKey<FormState>();
 
   final TextEditingController phoneController = TextEditingController();
   
@@ -33,52 +35,30 @@ class _RegisterState extends State<Register> {
   String _email;
   String _password;
   String _confirm;
-  String _company;
   String _firstName;
   String _lastName;
-  int _industryId = 1;
   String _mobile;
-  String searchIndustry;
 
   var items = ['Working a lot harder', 'Being a lot smarter', 'Being a self-starter', 'Placed in charge of trading charter'];
-  //var items = [];
-  Future<dynamic> filterIndustry(String str) async {
-    final response = await http.get(
-      baseUrl + 'account/filterindustry?query=' + str,
-    );
-    
-    final industrybody = json.decode(response.body);
-    if (response.statusCode == 200) {
-      var resultIndustry = industrybody['searchResult'];
-      print(resultIndustry);
-      // items = resultIndustry.OfType<String>().ToList();
-      //items = resultIndustry;
-      _industryId = 1;
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-    }
-    print(response.statusCode);
-    return response;
-  }
-
-  Future<dynamic> register() async {
+  
+  Future<dynamic> createAccount() async {
     final http.Response response = await http.post(
-      baseUrl + 'account/register',
+      baseUrl + 'employee/createaccount',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
       },
       body: jsonEncode(<String, dynamic>{
-        'Email': _email,
-        'Password': _password,
-        'Confirm': _confirm,
-        'Companyname': _company,
+        'CompanyId': 42,
         'FirstName': _firstName,
         'LastName': _lastName,
         'Mobile': _mobile,
-        'IndustryId': _industryId
+        'Email': _email,
+        'Password': _password,
+        'Confirm': _confirm,
       }),
     );
-    print(json.decode(response.body));
+    //print(json.decode(response.body));
     print(response.statusCode);
     
     if (response.statusCode == 200) {
@@ -87,7 +67,7 @@ class _RegisterState extends State<Register> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Login()),
+            builder: (context) => EmployeePage()),
       );
       message = 'Go to your email';
     }
@@ -122,7 +102,7 @@ class _RegisterState extends State<Register> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Sign up",
+              "Create Account",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
@@ -131,7 +111,7 @@ class _RegisterState extends State<Register> {
         body: Padding(
           padding: EdgeInsets.all(10),
           child: Form(
-            key: _registerKey,
+            key: _createAccountKey,
             child: ListView(
               children: <Widget>[
                 Container(
@@ -214,23 +194,6 @@ class _RegisterState extends State<Register> {
                   ),
                 
                 Container(
-                    padding: EdgeInsets.all(10),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter company';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                       
-                        border: OutlineInputBorder(),
-                        labelText: 'Company',
-                      ),
-                      onSaved: (value) => _company = value,
-                    ),
-                  ),
-                Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
                     obscureText: true,
@@ -270,62 +233,19 @@ class _RegisterState extends State<Register> {
                 ),
 
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: 
-                  new Row(
-                    children: <Widget>[
-                      new Expanded(
-                        child: TextFormField(
-                          controller: controller,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Industry',
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter industry';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            print(value);
-                            // filterIndustry(value);
-                          },
-                          // onSaved: (value) => _confirm = value,
-                        ),
-                      ),
-                      new PopupMenuButton<String>(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onSelected: (String value) {
-                          //print(value);
-                          searchIndustry = value;
-                          controller.text = value;
-                        },
-                        itemBuilder: (BuildContext context) {
-                          return items.map<PopupMenuItem<String>>((String value) {
-                            return new PopupMenuItem(child: new Text(value), value: value);
-                          }).toList();
-                        },
-                      ),
-                    ],
-                  ),
-
-                ),
-               
-                Container(
                   width: MediaQuery.of(context).size.width,
                   height: 70,
                     padding: EdgeInsets.all(10),
                     child: RaisedButton(
                       textColor: Colors.white,
                       color: Color(0xff0078d4),
-                      child: Text('Sign up'),
+                      child: Text('Create'),
                       onPressed: () {
-                        if (_registerKey.currentState.validate()) {
+                        if (_createAccountKey.currentState.validate()) {
                             // If the form is valid, display a Snackbar.
-                            _registerKey.currentState.save();
+                            _createAccountKey.currentState.save();
 
-                            register(); 
+                            createAccount(); 
                           }
                       },
                     )),

@@ -1,7 +1,6 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createservice.dart';
 import 'package:adovee_partner/screen/home.dart';
-import 'package:adovee_partner/screen/offline.dart';
+import 'package:adovee_partner/screen/smtpserverdetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -10,43 +9,67 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ServicePage extends StatefulWidget {
+class SmtpServerPage extends StatefulWidget {
   @override
-  _ServicePageState createState() => _ServicePageState();
+  _SmtpServerPageState createState() => _SmtpServerPageState();
 }
  
-class _ServicePageState extends State<ServicePage> {
-
-  
+class _SmtpServerPageState extends State<SmtpServerPage> {
   TextEditingController _searchController = TextEditingController();
   
-  int smsBalance;
-  Future<dynamic> getServices() async {
+  Future<dynamic> getSmtpServer() async {
     final response = await http.get(
-      baseUrl + 'service/getservices',
+      baseUrl + 'smtpserver/getsmtpserver',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
-      setState(() {
-        services = body['services'];
-      });
+      print('----------------smtp---------------------');
+      print(body);
       // setState(() {
-      //   // companyEmployees = body['employees'];
+      //   customers = body['customers'];
+      //   resultCustomers = customers;
       // });
     }
     else 
     {
-      print(response.statusCode);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OfflinePage()),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => OfflinePage()),
+      // );
     }
     return response;
   }
+
+  // Future<dynamic> searchCustomers(String str) async {
+  //   final response = await http.get(
+  //     baseUrl + 'customer/searchcustomers?Query=' + str,
+  //     headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+  //   );
+  //   print(response.statusCode);
+
+  //   if (response.statusCode == 200)
+  //   {
+  //     //print(json.decode(response.body));
+  //     var body = json.decode(response.body);
+  //     setState(() {
+  //       resultCustomers = body['customers'];
+  //     });
+  //     print(resultCustomers);
+  //   }
+  //   else 
+  //   {
+  //     // Navigator.push(
+  //     //   context,
+  //     //   MaterialPageRoute(
+  //     //       builder: (context) => OfflinePage()),
+  //     // );
+
+  //   }
+  //   return response;
+  // }
 
   Widget searchBox()
   {
@@ -56,7 +79,7 @@ class _ServicePageState extends State<ServicePage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Service",
+          hintText: "Search by Reference or smtp server",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -70,26 +93,28 @@ class _ServicePageState extends State<ServicePage> {
             ),
           ),
         ),
+        onChanged: (value) {
+          // searchCustomers(value);
+        },
       ),
     );   
   }
-  Widget serviceList(BuildContext context)
+  Widget smtpServerList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(services != null)
-    {
-      for(var i = 0; i < services.length; i++){
-        list.add(titleContentButton(context, services[i]['serviceTitle'], services[i]['price'].toString(), 'service', i));
-      }
-    }
+    // if (resultCustomers != null) {
+    //   for(var i = 0; i < resultCustomers.length; i++){
+    //     list.add(titleContentButton(context, resultCustomers[i]['fullName'], resultCustomers[i]['mobile'], 'customer',i));
+    //   }
+    // }
     
     return new ListView(children: list);
   }
 
   @override
   Widget build(BuildContext context) {
-    getServices();
+    getSmtpServer();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -100,14 +125,14 @@ class _ServicePageState extends State<ServicePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Services",
+              "SMTP Server",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: serviceList(context),
+            child: smtpServerList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -115,11 +140,11 @@ class _ServicePageState extends State<ServicePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateServicePage()),
+                  builder: (context) => SmtpServerUpdatePage(id: 1)),
             );
 
           },
-          tooltip: 'Create service',
+          tooltip: 'Create customer',
           ),
       ), 
       onWillPop: () async {

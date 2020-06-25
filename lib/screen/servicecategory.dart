@@ -1,22 +1,50 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createclient.dart';
+import 'package:adovee_partner/screen/createservicecategory.dart';
 import 'package:adovee_partner/screen/home.dart';
+import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// import 'package:http/http.dart' as http;
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-class ClientPage extends StatefulWidget {
+class ServiceCategoryPage extends StatefulWidget {
   @override
-  _ClientPageState createState() => _ClientPageState();
+  _ServiceCategoryPageState createState() => _ServiceCategoryPageState();
 }
  
-class _ClientPageState extends State<ClientPage> {
+class _ServiceCategoryPageState extends State<ServiceCategoryPage> {
+
+  
   TextEditingController _searchController = TextEditingController();
   
+  int smsBalance;
+  Future<dynamic> getAllServiceCategorys() async {
+    final response = await http.get(
+      baseUrl + 'service/getallservicecategorys',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+    );
+    if (response.statusCode == 200)
+    {
+      var body = json.decode(response.body);
+      setState(() {
+        categorizedServices = body['categorizedServices'];      
+      });
+    }
+    else 
+    {
+      print(response.statusCode);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OfflinePage()),
+      );
+    }
+    return response;
+  }
+
   Widget searchBox()
   {
     return Container(
@@ -25,7 +53,7 @@ class _ClientPageState extends State<ClientPage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Client",
+          hintText: "Search by Reference or Service",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -42,14 +70,14 @@ class _ClientPageState extends State<ClientPage> {
       ),
     );   
   }
-  Widget clientList(BuildContext context)
+  Widget serviceList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(employees != null)
+    if(categorizedServices != null)
     {
-      for(var i = 0; i < employees.length; i++){
-        list.add(titleContentButton(context, employees[i]['firstName'] + ' ' + employees[i]['lastName'], 'lexy0127@outlook.com', 'client', 0));
+      for(var i = 0; i < categorizedServices.length; i++){
+        list.add(titleContentButton(context, 'Name', categorizedServices[i]['categoryName'], 'category', i));
       }
     }
     
@@ -58,6 +86,7 @@ class _ClientPageState extends State<ClientPage> {
 
   @override
   Widget build(BuildContext context) {
+    getAllServiceCategorys();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -68,14 +97,14 @@ class _ClientPageState extends State<ClientPage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Client",
+              "Category",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: clientList(context),
+            child: serviceList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -83,18 +112,18 @@ class _ClientPageState extends State<ClientPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateClientPage()),
+                  builder: (context) => CreateServiceCategoryPage()),
             );
 
           },
-          tooltip: 'Create client',
+          tooltip: 'Create service category',
           ),
       ), 
       onWillPop: () async {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Home(current: 1)),
+              builder: (context) => Home(current: 4)),
         );
 
         return false;

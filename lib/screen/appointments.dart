@@ -1,6 +1,5 @@
 import 'package:adovee_partner/screen/home.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/global.dart';
 import 'package:flutter/rendering.dart';
 
 class AppointmentsPage extends StatefulWidget {
@@ -10,44 +9,6 @@ class AppointmentsPage extends StatefulWidget {
  
 class _AppointmentsPageState extends State<AppointmentsPage> {
   TextEditingController _searchController = TextEditingController();
-  
-  List wonders = [
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/Taj-Mahal.jpg",
-        name: "Taj Mahal",
-        country: "India"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/Christ-the-Redeemer.jpg",
-        name: "Christ the Redeemer",
-        country: "Brazil"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2016/03/petra-jordan9.jpg",
-        name: "Petra",
-        country: "Jordan"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/Great-Wall-of-China-view.jpg",
-        name: "The Great Wall of China",
-        country: "China"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/View-of-the-Colosseum.jpg",
-        name: "The Colosseum",
-        country: "Rome"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/Machu-Picchu-around-sunset.jpg",
-        name: "Machu Picchu",
-        country: "Peru"),
-    Place(
-        imageUrl:
-            "https://d36tnp772eyphs.cloudfront.net/blogs/1/2018/02/Chichen-Itza-at-night.jpg",
-        name: "Chichén Itzá",
-        country: "Mexico"),
-  ];
 
   Widget appointmentsTable()
   {

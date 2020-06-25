@@ -1,5 +1,5 @@
-import 'package:adovee/screen/favourite.dart';
-import 'package:adovee/screen/logindetail.dart';
+import 'package:adovee_partner/screen/favourite.dart';
+import 'package:adovee_partner/screen/logindetail.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
@@ -49,43 +49,42 @@ class _SettingPageState extends State<SettingPage> {
   Widget settingButton(Icon icon, String str, int buttonIndex)
   {
     return Container(
-            
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            height: MediaQuery.of(context).size.height / 11,
-            child: new RaisedButton(
-              color: Colors.white,
-              onPressed: () {
-                switch (buttonIndex) {
-                  case 0:    
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginDetailPage()),
-                    );   
-                    break;
-                  case 1:    
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FavouritePage()),
-                    );   
-                    break;
-                  default:
-                }
-              },
-              padding: EdgeInsets.all(8.0),
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      icon,
-                      new Text('  ' + str),
-                    ],
-                  ),
-                )
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+      height: MediaQuery.of(context).size.height / 11,
+      child: new RaisedButton(
+        color: Colors.white,
+        onPressed: () {
+          switch (buttonIndex) {
+            case 0:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LoginDetailPage()),
+              );   
+              break;
+            case 1:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FavouritePage()),
+              );   
+              break;
+            default:
+          }
+        },
+        padding: EdgeInsets.all(8.0),
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                icon,
+                new Text('  ' + str),
+              ],
             ),
-          );
+          )
+      ),
+    );
   } 
 }

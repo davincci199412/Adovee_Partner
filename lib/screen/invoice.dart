@@ -117,7 +117,7 @@ class _InvoicePageState extends State<InvoicePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Home(current: 1)),
+              builder: (context) => Home(current: 1, )),
         );
 
         return false;

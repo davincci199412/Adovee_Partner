@@ -4,6 +4,7 @@ import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:adovee_partner/screen/settings.dart';
 import 'package:adovee_partner/screen/payments.dart';
+import 'package:adovee_partner/global.dart';
 
 class ClientDetailPage extends StatefulWidget {
 
@@ -37,14 +38,14 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             ),
           ),
 
-          profileDescription('Email', 'lexy0127@outlook.com'),
-          profileDescription('Gender', 'Male'),
-          profileDescription('Total Sales', 'USD 0'),
-          profileDescription('Outstanding', 'USD 0'),
-          profileDescription('All Booking', '1'),
-          profileDescription('Completed', '0'),
-          profileDescription('Cancelled', '0'),
-          profileDescription('No shows', '0'),
+          titleContentDescription(context, 'Email', 'lexy0127@outlook.com'),
+          titleContentDescription(context, 'Gender', 'Male'),
+          titleContentDescription(context, 'Total Sales', 'USD 0'),
+          titleContentDescription(context, 'Outstanding', 'USD 0'),
+          titleContentDescription(context, 'All Booking', '1'),
+          titleContentDescription(context, 'Completed', '0'),
+          titleContentDescription(context, 'Cancelled', '0'),
+          titleContentDescription(context, 'No shows', '0'),
 
           Container(
             padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
@@ -98,11 +99,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                     
               )
           ),
-          // profileButton(new Icon(Icons.business_center), 'Staff', 1),
-          // profileButton(new Icon(Icons.local_laundry_service), 'Services', 2),
-          // profileButton(new Icon(Icons.payment), 'Inventory', 3),
-          // profileButton(new Icon(Icons.format_list_bulleted), 'Analytics', 4),
-          // profileButton(new Icon(Icons.settings), 'Setup', 5),
         ],
       ),
     );
@@ -143,7 +139,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => EditProfile()),
+                    builder: (context) => EditProfilePage()),
               );
             },
           ),
@@ -215,50 +211,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       );
   } 
 
-  Widget profileDescription(String strTitle, String strContent)
-  {
-    return Container(   
-      padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-      height: MediaQuery.of(context).size.height / 8,
-      decoration: BoxDecoration(
-        // border: Border.all(color: Colors.blueAccent),
-        color: Color(0xfff2f2f2),
-        border: Border(bottom: BorderSide(color: Color(0xff888888)))
-      ),
-      child: Align(
-          alignment: Alignment.centerLeft,
-          child: Center(
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(strTitle),
-                          Text(strContent,
-                            style: Theme.of(context).textTheme.headline6.apply(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ), 
-            
-          ), 
-              
-        )
-    );
-    
-  }
 
   Widget appointmentDescription(String strDay, String strMonth, String strTime, String strTitle, String strContent, String strMoney)
   {

@@ -116,22 +116,22 @@ class _SeleteTimePageState extends State<SeleteTimePage> {
             ),
 
             Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: RaisedButton(
-                        textColor: Colors.white,
-                        color: Color(0xff0078d4),
-                        child: Text('Go to Wednesday 17 Jun'),
-                        onPressed: () {
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: RaisedButton(
+                textColor: Colors.white,
+                color: Color(0xff0078d4),
+                child: Text('Go to Wednesday 17 Jun'),
+                onPressed: () {
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ReviewPage(id: 1)),
-                            );
-                        },
-                      )),                
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReviewPage(id: 1)),
+                    );
+                },
+              )),                
           ],
         )
       );

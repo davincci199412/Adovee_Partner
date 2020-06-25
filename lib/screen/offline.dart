@@ -1,4 +1,4 @@
-import 'package:adovee/screen/home.dart';
+import 'package:adovee_partner/screen/home.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,27 +14,16 @@ class _OfflinePageState extends State<OfflinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: PreferredSize(
-        //   preferredSize: Size.fromHeight(50.0), // here the desired height
-        //   child: AppBar(
-        //     iconTheme: IconThemeData(
-        //       color: Color(0xff0078d4), //change your color here
-        //     ),
-        //     backgroundColor: Colors.white,
-        //     title: Text(
-        //       "Sign in",
-        //       style: TextStyle(color: Color(0xff0078d4)),
-        //     ),
-        //   )
-        // ),
         body: Padding(
             padding: EdgeInsets.all(10),
             child: Center(
-              child: ListView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(50),
+                    padding: EdgeInsets.all(30),
                     child: new Image(image: AssetImage('assets/images/logo.png')),
                   ),
                   
@@ -43,9 +32,13 @@ class _OfflinePageState extends State<OfflinePage> {
                     padding: EdgeInsets.all(20),
                     child: new Text(
                       'You are offline',
-                      style: TextStyle(fontSize: 25),),
+                      style: Theme.of(context).textTheme.headline6.apply(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width,
                     height: 50,
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: RaisedButton(

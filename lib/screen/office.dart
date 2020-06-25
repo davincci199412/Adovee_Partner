@@ -1,5 +1,5 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createservice.dart';
+import 'package:adovee_partner/screen/createoffice.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
@@ -10,35 +10,31 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ServicePage extends StatefulWidget {
+class OfficePage extends StatefulWidget {
   @override
-  _ServicePageState createState() => _ServicePageState();
+  _OfficePageState createState() => _OfficePageState();
 }
  
-class _ServicePageState extends State<ServicePage> {
-
-  
+class _OfficePageState extends State<OfficePage> {
   TextEditingController _searchController = TextEditingController();
   
-  int smsBalance;
-  Future<dynamic> getServices() async {
+  Future<dynamic> getOffices() async {
     final response = await http.get(
-      baseUrl + 'service/getservices',
+      baseUrl + 'office/getoffices',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
       setState(() {
-        services = body['services'];
+        if (body != []) {
+          offices = body['offices'];
+        }
       });
-      // setState(() {
-      //   // companyEmployees = body['employees'];
-      // });
+      // print(offices);
     }
     else 
     {
-      print(response.statusCode);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -48,6 +44,33 @@ class _ServicePageState extends State<ServicePage> {
     return response;
   }
 
+  // Future<dynamic> searchCustomers(String str) async {
+  //   final response = await http.get(
+  //     baseUrl + 'customer/searchcustomers?Query=' + str,
+  //     headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+  //   );
+  //   print(response.statusCode);
+
+  //   if (response.statusCode == 200)
+  //   {
+  //     //print(json.decode(response.body));
+  //     var body = json.decode(response.body);
+  //     setState(() {
+  //       resultCustomers = body['customers'];
+  //     });
+  //   }
+  //   else 
+  //   {
+  //     // Navigator.push(
+  //     //   context,
+  //     //   MaterialPageRoute(
+  //     //       builder: (context) => OfflinePage()),
+  //     // );
+
+  //   }
+  //   return response;
+  // }
+
   Widget searchBox()
   {
     return Container(
@@ -56,7 +79,7 @@ class _ServicePageState extends State<ServicePage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Service",
+          hintText: "Search Office",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -70,17 +93,19 @@ class _ServicePageState extends State<ServicePage> {
             ),
           ),
         ),
+        onChanged: (value) {
+          // searchCustomers(value);
+        },
       ),
     );   
   }
-  Widget serviceList(BuildContext context)
+  Widget officeList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(services != null)
-    {
-      for(var i = 0; i < services.length; i++){
-        list.add(titleContentButton(context, services[i]['serviceTitle'], services[i]['price'].toString(), 'service', i));
+    if (offices != null) {
+      for(var i = 0; i < offices.length; i++){
+        list.add(titleContentButton(context, offices[i]['name'], offices[i]['country'], 'office',i));
       }
     }
     
@@ -89,7 +114,7 @@ class _ServicePageState extends State<ServicePage> {
 
   @override
   Widget build(BuildContext context) {
-    getServices();
+    getOffices();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -100,14 +125,14 @@ class _ServicePageState extends State<ServicePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Services",
+              "Office",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: serviceList(context),
+            child: officeList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -115,11 +140,11 @@ class _ServicePageState extends State<ServicePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateServicePage()),
+                  builder: (context) => CreateOfficePage()),
             );
 
           },
-          tooltip: 'Create service',
+          tooltip: 'Create office',
           ),
       ), 
       onWillPop: () async {

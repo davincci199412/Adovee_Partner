@@ -1,7 +1,8 @@
+import 'package:adovee_partner/screen/firstscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee/screen/home.dart';
 
 void main() {
+  //SyncfusionLicense.registerLicense('ADD YOUR LICENCE KEY HERE');
   runApp(MyApp());
 }
 
@@ -16,10 +17,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'OpenSans'
       ),
-      home: Home(current: 0),
-      // routes: {
-      //   'details' : (ctx) => DetailsScreen(),
-      // }
+      home: FirstScreenPage(),
+      
     );
   }
 }

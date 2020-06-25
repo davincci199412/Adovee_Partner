@@ -1,6 +1,4 @@
 import 'package:adovee_partner/screen/appintmentcreate.dart';
-import 'package:adovee_partner/screen/clientdetail.dart';
-import 'package:adovee_partner/screen/createclient.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

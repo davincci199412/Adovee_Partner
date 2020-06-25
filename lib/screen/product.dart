@@ -1,22 +1,47 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createclient.dart';
+import 'package:adovee_partner/screen/createcustomer.dart';
 import 'package:adovee_partner/screen/home.dart';
+import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// import 'package:http/http.dart' as http;
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-class ClientPage extends StatefulWidget {
+class ProductPage extends StatefulWidget {
   @override
-  _ClientPageState createState() => _ClientPageState();
+  _ProductPageState createState() => _ProductPageState();
 }
  
-class _ClientPageState extends State<ClientPage> {
+class _ProductPageState extends State<ProductPage> {
   TextEditingController _searchController = TextEditingController();
   
+  Future<dynamic> getProduct() async {
+    final response = await http.get(
+      baseUrl + 'product/getproduct',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200)
+    {
+      var body = json.decode(response.body);
+      setState(() {
+        products = body['product'];
+      });
+    }
+    else 
+    {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OfflinePage()),
+      );
+    }
+    return response;
+  }
+
   Widget searchBox()
   {
     return Container(
@@ -25,7 +50,7 @@ class _ClientPageState extends State<ClientPage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Client",
+          hintText: "Search by Reference or Product",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -39,17 +64,19 @@ class _ClientPageState extends State<ClientPage> {
             ),
           ),
         ),
+        onChanged: (value) {
+          // searchCustomers(value);
+        },
       ),
     );   
   }
-  Widget clientList(BuildContext context)
+  Widget productList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(employees != null)
-    {
-      for(var i = 0; i < employees.length; i++){
-        list.add(titleContentButton(context, employees[i]['firstName'] + ' ' + employees[i]['lastName'], 'lexy0127@outlook.com', 'client', 0));
+    if (products != null) {
+      for(var i = 0; i < products.length; i++){
+        list.add(contentButton(context, products[i]['categoryName'], 'product',i));
       }
     }
     
@@ -58,6 +85,7 @@ class _ClientPageState extends State<ClientPage> {
 
   @override
   Widget build(BuildContext context) {
+    getProduct();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -68,14 +96,14 @@ class _ClientPageState extends State<ClientPage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Client",
+              "Product",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: clientList(context),
+            child: productList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -83,18 +111,18 @@ class _ClientPageState extends State<ClientPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateClientPage()),
+                  builder: (context) => CreateCustomerPage()),
             );
 
           },
-          tooltip: 'Create client',
+          tooltip: 'Create customer',
           ),
       ), 
       onWillPop: () async {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Home(current: 1)),
+              builder: (context) => Home(current: 4)),
         );
 
         return false;

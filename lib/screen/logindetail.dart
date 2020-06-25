@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:adovee/screen/login.dart';
-import 'package:adovee/screen/register.dart';
+import 'package:adovee_partner/screen/login.dart';
+import 'package:adovee_partner/screen/register.dart';
 //import 'package:adovee/widget/facebooksignin.dart';
 
 class LoginDetailPage extends StatefulWidget {

@@ -1,44 +1,43 @@
 import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/createservice.dart';
+import 'package:adovee_partner/screen/createemployee.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:adovee_partner/screen/offline.dart';
+import 'package:adovee_partner/screen/workinghour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ServicePage extends StatefulWidget {
+class EmployeePage extends StatefulWidget {
   @override
-  _ServicePageState createState() => _ServicePageState();
+  _EmployeePageState createState() => _EmployeePageState();
 }
  
-class _ServicePageState extends State<ServicePage> {
+class _EmployeePageState extends State<EmployeePage> {
 
-  
   TextEditingController _searchController = TextEditingController();
   
-  int smsBalance;
-  Future<dynamic> getServices() async {
+  Future<dynamic> getEmployeeInCompany() async {
     final response = await http.get(
-      baseUrl + 'service/getservices',
+      baseUrl + 'employee/getemployeeincompany',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
+      print(body);
       setState(() {
-        services = body['services'];
+        companyEmployees = body['employees'];
       });
-      // setState(() {
-      //   // companyEmployees = body['employees'];
-      // });
     }
     else 
     {
-      print(response.statusCode);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -48,6 +47,47 @@ class _ServicePageState extends State<ServicePage> {
     return response;
   }
 
+  Widget _getFAB() {
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme: IconThemeData(size: 22),
+      backgroundColor: ThemeColors.lightBlue,
+      visible: true,
+      curve: Curves.bounceIn,
+      tooltip: 'Change Company',
+      children: [
+            // FAB 1
+        SpeedDialChild(
+          child: Icon(Icons.verified_user),
+          backgroundColor: ThemeColors.lightBlue,
+          onTap: () { 
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => WorkingHourPage()),
+              );
+          },
+          label: 'Update Company',
+        ),
+        // FAB 2
+        SpeedDialChild(
+          child: Icon(Icons.add),
+          backgroundColor: ThemeColors.lightBlue,
+          onTap: () {
+              setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateEmployeePage()),
+                );
+              });
+          },
+        )
+      ],
+    );
+  }
+
+
   Widget searchBox()
   {
     return Container(
@@ -56,7 +96,7 @@ class _ServicePageState extends State<ServicePage> {
         controller: _searchController,
         decoration: InputDecoration(
           labelText: "Search",
-          hintText: "Search by Reference or Service",
+          hintText: "Search by Reference or Employee",
           prefixIcon: Icon(Icons.search),
           suffixIcon: _searchController.text.isEmpty
               ? null
@@ -73,14 +113,14 @@ class _ServicePageState extends State<ServicePage> {
       ),
     );   
   }
-  Widget serviceList(BuildContext context)
+  Widget employeeList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    if(services != null)
+    if(companyEmployees != null)
     {
-      for(var i = 0; i < services.length; i++){
-        list.add(titleContentButton(context, services[i]['serviceTitle'], services[i]['price'].toString(), 'service', i));
+      for(var i = 0; i < companyEmployees.length; i++){
+        list.add(titleContentButton(context, companyEmployees[i]['firstName'] + ' ' + companyEmployees[i]['lastName'], companyEmployees[i]['email'], 'employee', i));
       }
     }
     
@@ -89,7 +129,7 @@ class _ServicePageState extends State<ServicePage> {
 
   @override
   Widget build(BuildContext context) {
-    getServices();
+    getEmployeeInCompany();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
@@ -100,14 +140,14 @@ class _ServicePageState extends State<ServicePage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Services",
+              "Employees",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
-            child: serviceList(context),
+            child: employeeList(context),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -115,12 +155,13 @@ class _ServicePageState extends State<ServicePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateServicePage()),
+                  builder: (context) => CreateEmployeePage()),
             );
-
           },
-          tooltip: 'Create service',
+          tooltip: 'Create employee',
           ),
+        // floatingActionButton: _getFAB(),
+        
       ), 
       onWillPop: () async {
         Navigator.push(

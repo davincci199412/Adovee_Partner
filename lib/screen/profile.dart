@@ -1,11 +1,20 @@
-import 'package:adovee/screen/dashboard.dart';
-import 'package:adovee/screen/editprofile.dart';
-import 'package:adovee/screen/offline.dart';
+import 'package:adovee_partner/screen/customer.dart';
+import 'package:adovee_partner/screen/dashboard.dart';
+import 'package:adovee_partner/screen/company.dart';
+import 'package:adovee_partner/screen/employee.dart';
+import 'package:adovee_partner/screen/contactpreference.dart';
+import 'package:adovee_partner/screen/faq.dart';
+import 'package:adovee_partner/screen/office.dart';
+import 'package:adovee_partner/screen/product.dart';
+import 'package:adovee_partner/screen/service.dart';
+import 'package:adovee_partner/screen/smtpserver.dart';
+import 'package:adovee_partner/screen/statisticsservicebooking.dart';
+
 import 'package:flutter/material.dart';
-import 'package:adovee/screen/settings.dart';
-import 'package:adovee/screen/payments.dart';
+
 
 class Profile extends StatefulWidget {
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -20,68 +29,26 @@ class _ProfileState extends State<Profile> {
       backgroundColor: Colors.white,
       body: ListView(
         children: <Widget>[
-          profileAvatar(),
-          profileButton(new Icon(Icons.calendar_today), 'Appointments', 0),
-          profileButton(new Icon(Icons.favorite_border), 'Favourite', 1),
-          profileButton(new Icon(Icons.settings), 'Settings', 2),
-          profileButton(new Icon(Icons.payment), 'Payment methods', 3),
-          profileButton(new Icon(Icons.lightbulb_outline), 'Customer support', 4),
-          profileButton(new Icon(Icons.exit_to_app), 'Logout', 5),
+
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(50),
+            child: new Image(image: AssetImage('assets/images/logo.png')),
+          ),
+          profileButton(new Icon(Icons.contacts), 'Company', 1),
+          profileButton(new Icon(Icons.contacts), 'Contact Preference', 2),
+          profileButton(new Icon(Icons.copyright), 'Customer', 3),
+          profileButton(new Icon(Icons.contacts), 'Employee', 4),
+          profileButton(new Icon(Icons.contacts), 'Faq', 5),
+          profileButton(new Icon(Icons.contacts), 'Office', 6),
+          profileButton(new Icon(Icons.local_laundry_service), 'Services', 7),
+          profileButton(new Icon(Icons.payment), 'Product', 8),
+          profileButton(new Icon(Icons.format_list_bulleted), 'Statistics', 9),
+          profileButton(new Icon(Icons.settings), 'SMTP Server', 10),
         ],
       ),
     );
   }
-  
-  Widget profileAvatar(){
-    return Center(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            width: 40.0,
-            height: MediaQuery.of(context).size.height / 32,
-          ),
-          CircleAvatar(
-            radius: MediaQuery.of(context).size.height / 8,
-            backgroundImage: AssetImage('assets/images/profile_logo.jpg'),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 32,
-            child: Text(
-              'Lexy',
-              style: TextStyle(
-                fontFamily: 'SourceSansPro',
-                fontSize: 20,
-              ),
-            ),
-          ),
-          
-          FlatButton(
-            textColor: Colors.blue,
-            padding: EdgeInsets.all(0),
-            child: Text(
-              'Edit Profile',
-              //style: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              //signup screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EditProfile()),
-              );
-            },
-          ),
-          SizedBox(
-            height: 20.0,
-            width: 200,
-            child: Divider(
-              color: Colors.teal[100],
-            ),
-          ),
-        ],
-      ),
-    );
-}
 
   Widget profileButton(Icon icon, String str, int buttonIndex)
   {
@@ -96,28 +63,77 @@ class _ProfileState extends State<Profile> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Dashboard()),
+                    builder: (context) => DashboardPage()),
               );   
               break;
             case 1: 
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => OfflinePage()),
+                    builder: (context) => CompanyPage()),
               );   
               break;
             case 2:    
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SettingPage()),
+                    builder: (context) => ContactPreferencePage()),
               );   
               break;
             case 3:    
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PaymentPage()),
+                    builder: (context) => CustomerPage()),
+              );   
+              break;
+            case 4:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EmployeePage()),
+              );   
+              break;
+            case 5:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FaqPage()),
+              );   
+              break;
+            case 6:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => OfficePage()),
+              );   
+              break;
+            case 7:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ServicePage()),
+              );   
+              break;
+            case 8:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductPage()),
+              );   
+              break;
+            case 9:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => StatisticsPage()),
+              );   
+              break;
+            case 10:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SmtpServerPage()),
               );   
               break;
             default:

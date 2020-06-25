@@ -1,5 +1,12 @@
+import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:adovee_partner/global.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 class CreateClientPage extends StatefulWidget {
   @override
@@ -15,9 +22,32 @@ class _CreateClientPageState extends State<CreateClientPage> {
   final TextEditingController controller = TextEditingController();
   String initialCountry = 'NG';
   PhoneNumber number = PhoneNumber(isoCode: 'NG');
+  var employees;
+  Future<dynamic> getSmsBalanceByCompanyId() async {
+    final response = await http.get(
+      baseUrl + 'company/getsmsbalancebycompanyid',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+    );
+    if (response.statusCode == 200)
+    {
+      // print(json.decode(response.body));
+      employees = json.decode(response.body);
+    }
+    else 
+    {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OfflinePage()),
+      );
+    }
+    return response;
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    getSmsBalanceByCompanyId();
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0), // here the desired height

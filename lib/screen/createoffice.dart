@@ -42,9 +42,6 @@ class _CreateOfficePageState extends State<CreateOfficePage> {
   String _area;
   String _mobile;
 
-  // var items = ['Working a lot harder', 'Being a lot smarter', 'Being a self-starter', 'Placed in charge of trading charter'];
-  //var items = [];
-  
   Future<dynamic> setOffice() async {
     final http.Response response = await http.post(
       baseUrl + 'office/setoffice',
@@ -63,8 +60,6 @@ class _CreateOfficePageState extends State<CreateOfficePage> {
     );
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -95,10 +90,10 @@ class _CreateOfficePageState extends State<CreateOfficePage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -162,11 +157,9 @@ class _CreateOfficePageState extends State<CreateOfficePage> {
                         padding: EdgeInsets.all(10),
                         child: InternationalPhoneNumberInput(
                           onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
                             _mobile = number.phoneNumber;
                           },
                           onInputValidated: (bool value) {
-                            print(value);
                           },
                           ignoreBlank: false,
                           autoValidate: false,
@@ -259,7 +252,6 @@ class _CreateOfficePageState extends State<CreateOfficePage> {
                             child: Text('Set Office'),
                             onPressed: () {
                               if (_setOfficeKey.currentState.validate()) {
-                                  // If the form is valid, display a Snackbar.
                                   _setOfficeKey.currentState.save();
                                   setOffice();
                                 }

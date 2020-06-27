@@ -14,10 +14,10 @@ class _FavouritePageState extends State<FavouritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -60,10 +60,7 @@ class _FavouritePageState extends State<FavouritePage> {
                   height: 400,
                     padding: EdgeInsets.all(10),
                     child: GridView.count(
-                      // Create a grid with 2 columns. If you change the scrollDirection to
-                      // horizontal, this produces 2 rows.
                       crossAxisCount: 2,
-                      // Generate 100 widgets that display their index in the List.
                       children: List.generate(4, (index) {
                         return Center(
                           child: Text(

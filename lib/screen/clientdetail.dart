@@ -1,9 +1,5 @@
-import 'package:adovee_partner/screen/dashboard.dart';
 import 'package:adovee_partner/screen/editprofile.dart';
-import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
-import 'package:adovee_partner/screen/settings.dart';
-import 'package:adovee_partner/screen/payments.dart';
 import 'package:adovee_partner/global.dart';
 
 class ClientDetailPage extends StatefulWidget {
@@ -63,7 +59,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
             height: MediaQuery.of(context).size.height / 8,
             decoration: BoxDecoration(
-              // border: Border.all(color: Colors.blueAccent),
               color: Color(0xfff2f2f2),
               border: Border(bottom: BorderSide(color: Color(0xff888888)))
             ),
@@ -132,10 +127,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             padding: EdgeInsets.all(0),
             child: Text(
               'Edit Profile',
-              //style: TextStyle(fontSize: 20),
             ),
             onPressed: () {
-              //signup screen
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -155,62 +148,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     );
 }
 
-  Widget profileButton(Icon icon, String str, int buttonIndex)
-  {
-    return Container(  
-      padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
-      height: MediaQuery.of(context).size.height / 12,
-      child: new RaisedButton(
-        color: Colors.white,
-        onPressed: () {
-          switch (buttonIndex) {
-            case 0:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DashboardPage()),
-              );   
-              break;
-            case 1: 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => OfflinePage()),
-              );   
-              break;
-            case 2:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SettingPage()),
-              );   
-              break;
-            case 3:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PaymentPage()),
-              );   
-              break;
-            default:
-          }
-        },
-        padding: EdgeInsets.all(8.0),
-        child: Align(
-            alignment: Alignment.centerLeft,
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                icon,
-                new Text('  ' + str),
-              ],
-            ),
-          )
-        ),
-      );
-  } 
-
 
   Widget appointmentDescription(String strDay, String strMonth, String strTime, String strTitle, String strContent, String strMoney)
   {
@@ -218,7 +155,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
       height: MediaQuery.of(context).size.height / 8,
       decoration: BoxDecoration(
-        // border: Border.all(color: Colors.blueAccent),
         color: Color(0xfff2f2f2),
         border: Border(bottom: BorderSide(color: Color(0xff888888)))
       ),

@@ -25,14 +25,10 @@ class _ContactPreferencePageState extends State<ContactPreferencePage> {
       baseUrl + 'contactpreference/getcontactpreference',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
-    // print(response.statusCode);
     final body = json.decode(response.body);
     if (response.statusCode == 200)
     {
-      // print(body);
-      // print(json.decode(response.body));
       message = 'Go to your email';
-
     }
     else 
     {
@@ -68,9 +64,6 @@ class _ContactPreferencePageState extends State<ContactPreferencePage> {
         'Email': true,
       }),
     );
-    //final body = json.decode(response.body);
-    // print(response.statusCode);
-    // print(json.decode(response.headers));
     if (response.statusCode == 200) {
       
       Navigator.push(
@@ -103,10 +96,10 @@ class _ContactPreferencePageState extends State<ContactPreferencePage> {
         backgroundColor: Colors.white,
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xFF222E36), //change your color here
+              color: Color(0xFF222E36),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -137,7 +130,6 @@ class _ContactPreferencePageState extends State<ContactPreferencePage> {
                       color: Colors.blue,
                       child: Text('GetContactPreference'),
                       onPressed: () {
-                        //showDialog();
                         getContactPreference();
                       },
                     )),
@@ -151,7 +143,6 @@ class _ContactPreferencePageState extends State<ContactPreferencePage> {
                       color: Colors.blue,
                       child: Text('SetContactPreference'),
                       onPressed: () {
-                        //showDialog();
                         setContactPreference();
                       },
                     )),

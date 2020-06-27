@@ -22,8 +22,6 @@ class WorkingHourPage extends StatefulWidget {
  
 class _WorkingHourPageState extends State<WorkingHourPage> {
   TextEditingController _searchController = TextEditingController();
- 
-  final _employeeDetailKey = GlobalKey<FormState>();
 
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now().add(Duration(days: 7));
@@ -41,7 +39,6 @@ class _WorkingHourPageState extends State<WorkingHourPage> {
         _startDate = picked[0];
         _endDate = picked[1];
       });
-      print(picked);
       
     }
   }
@@ -55,26 +52,12 @@ class _WorkingHourPageState extends State<WorkingHourPage> {
     );
     if (response.statusCode == 200)
     {
-      print('getworkinghours');
-      print(json.decode(response.body));
       final body = json.decode(response.body);
-      print('____________________________________');
-      print(body);
 
       if(body != null) workinghours = body['employees'];
-      // var body = json.decode(response.body);
-      // setState(() {
-      //   companyEmployees = body['employees'];
-      // });
-      //print(companyEmployees);
     }
     else 
     {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => OfflinePage()),
-      // );
     }
     return response;
   }
@@ -95,13 +78,6 @@ class _WorkingHourPageState extends State<WorkingHourPage> {
       }),
     );
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => CustomerPage()),
-      // );
       message = 'Booking Success';
     }
     else {
@@ -129,8 +105,6 @@ class _WorkingHourPageState extends State<WorkingHourPage> {
 
       },
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
       message = 'Delete Success';
@@ -197,10 +171,10 @@ class _WorkingHourPageState extends State<WorkingHourPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

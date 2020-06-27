@@ -18,10 +18,10 @@ class _SalesPageState extends State<SalesPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -52,11 +52,6 @@ class _SalesPageState extends State<SalesPage> {
     return Container(   
       padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
       height: MediaQuery.of(context).size.height / 8,
-      // decoration: BoxDecoration(
-      //   // border: Border.all(color: Colors.blueAccent),
-      //   color: Color(0xffeeeeee),
-      //   border: Border(bottom: BorderSide(color: Color(0xff888888)))
-      // ),
       child: FlatButton(
         onPressed: () {
           switch (buttonIndex) {
@@ -149,56 +144,6 @@ class _SalesPageState extends State<SalesPage> {
               
         )
     ),
-    //   child: Align(
-    //       alignment: Alignment.centerLeft,
-    //       child: Center(
-    //         child: new Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: <Widget>[
-    //             new Row(
-    //               children: <Widget>[
-    //                 icon,
-    //                 SizedBox(
-    //                   width: 10,
-    //                 ),
-    //                 Padding(
-    //                   padding: EdgeInsets.all(0),
-    //                   child: Column(
-    //                     mainAxisAlignment: MainAxisAlignment.center,
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     children: <Widget>[
-    //                       Text(
-    //                         strTitle,
-    //                         style: Theme.of(context).textTheme.headline6.apply(
-    //                           color: Colors.black,
-    //                         ),
-    //                       ),
-    //                       Container(
-    //                         constraints: new BoxConstraints(
-    //                           maxWidth: MediaQuery.of(context).size.width * 0.8
-    //                         ),
-    //                         child: Text(
-    //                           strContent,
-    //                           style: Theme.of(context)
-    //                             .textTheme
-    //                             .subtitle2
-    //                             .apply(color: Colors.black38),
-    //                           textAlign: TextAlign.left,
-    //                         ),
-    //                       ),
-                          
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-                
-    //           ],
-    //         ), 
-            
-    //       ), 
-              
-    //     )
     );
   } 
 }

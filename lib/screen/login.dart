@@ -68,10 +68,10 @@ class _LoginState extends State<Login> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0), 
           child: AppBar(
             iconTheme: IconThemeData(
-              color: ThemeColors.lightBlue, //change your color here
+              color: ThemeColors.lightBlue,
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -138,7 +138,6 @@ class _LoginState extends State<Login> {
                       ),
                       FlatButton(
                         onPressed: (){
-                          //forgot password screen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -166,7 +165,6 @@ class _LoginState extends State<Login> {
                               if (_loginKey.currentState.validate()) {
                                 _loginKey.currentState.save();
                                 login();
-                                //authenticateUser();
                               }
                             },
                           )),
@@ -181,7 +179,6 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(fontSize: 20),
                               ),
                               onPressed: () {
-                                //signup screen
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

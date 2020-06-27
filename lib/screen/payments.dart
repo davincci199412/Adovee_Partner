@@ -16,10 +16,10 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

@@ -1,5 +1,4 @@
 import 'package:adovee_partner/screen/customer.dart';
-import 'package:adovee_partner/screen/dashboard.dart';
 import 'package:adovee_partner/screen/company.dart';
 import 'package:adovee_partner/screen/employee.dart';
 import 'package:adovee_partner/screen/contactpreference.dart';
@@ -8,7 +7,7 @@ import 'package:adovee_partner/screen/office.dart';
 import 'package:adovee_partner/screen/product.dart';
 import 'package:adovee_partner/screen/service.dart';
 import 'package:adovee_partner/screen/smtpserver.dart';
-import 'package:adovee_partner/screen/statisticsservicebooking.dart';
+import 'package:adovee_partner/screen/statistics.dart';
 
 import 'package:flutter/material.dart';
 
@@ -59,13 +58,6 @@ class _ProfileState extends State<Profile> {
         color: Colors.white,
         onPressed: () {
           switch (buttonIndex) {
-            case 0:    
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DashboardPage()),
-              );   
-              break;
             case 1: 
               Navigator.push(
                 context,

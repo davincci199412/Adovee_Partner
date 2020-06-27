@@ -21,7 +21,7 @@ class _CompanyApiPageState extends State<CompanyApiPage> {
   var companyapi;
   Future<dynamic> addCompanyApi() async {
     final http.Response response = await http.post(
-      baseUrl + 'company/addcompanyapi',
+      baseUrl + 'company/addstripeapi',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
@@ -32,11 +32,6 @@ class _CompanyApiPageState extends State<CompanyApiPage> {
     );
     if (response.statusCode == 200) {
       
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => Profile()),
-      // );
       message = 'Success' + _companyapi;
     }
     else {
@@ -57,7 +52,7 @@ class _CompanyApiPageState extends State<CompanyApiPage> {
 
   Future<dynamic> getCompanyApi() async {
     final response = await http.get(
-      baseUrl + 'company/getcompanyapi',
+      baseUrl + 'company/getstripeapi',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
     if (response.statusCode == 200)
@@ -95,10 +90,10 @@ class _CompanyApiPageState extends State<CompanyApiPage> {
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
+        preferredSize: Size.fromHeight(50.0),
         child: AppBar(
           iconTheme: IconThemeData(
-            color: ThemeColors.lightBlue, //change your color here
+            color: ThemeColors.lightBlue,
           ),
           backgroundColor: Colors.white,
           title: Text(

@@ -4,10 +4,6 @@ import 'package:adovee_partner/screen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// import 'package:http/http.dart' as http;
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:io';
 
 class ClientPage extends StatefulWidget {
   @override
@@ -61,10 +57,10 @@ class _ClientPageState extends State<ClientPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

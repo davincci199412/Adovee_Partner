@@ -1,182 +1,76 @@
-import 'package:adovee_partner/global.dart';
-import 'package:adovee_partner/screen/offline.dart';
+import 'package:adovee_partner/screen/moneyearning.dart';
+import 'package:adovee_partner/screen/statisticsservicebooking.dart';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class CompanyApiPage extends StatefulWidget {
+
+class StatisticsPage extends StatefulWidget {
+
   @override
-  _CompanyApiPageState createState() => _CompanyApiPageState();
+  _StatisticsPageState createState() => _StatisticsPageState();
 }
  
-class _CompanyApiPageState extends State<CompanyApiPage> {
-  TextEditingController emailController = TextEditingController();
+class _StatisticsPageState extends State<StatisticsPage> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  final _companyApiKey = GlobalKey<FormState>();
-  var companyapi;
-  Future<dynamic> addCompanyApi() async {
-    final http.Response response = await http.post(
-      baseUrl + 'company/addcompanyapi',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-      },
-      body: jsonEncode(<String, String>{
-        'ApiKey': _companyapi,
-      }),
-    );
-    if (response.statusCode == 200) {
-      
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => Profile()),
-      // );
-      message = 'Success' + _companyapi;
-    }
-    else {
-      message = 'Load api failed.';
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    }
-
-    return response;
-  }
-
-  Future<dynamic> getCompanyApi() async {
-    final response = await http.get(
-      baseUrl + 'company/getcompanyapi',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
-    );
-    if (response.statusCode == 200)
-    {
-      Fluttertoast.showToast(
-        msg: 'Success get api',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-      final body = json.decode(response.body);
-      companyapi = body['companyApi'];
-    }
-    else 
-    {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OfflinePage()),
-      );
-    }
-    return response;
-  }
-
-  String _companyapi;
-  String message = '';
-
+ 
   @override
   Widget build(BuildContext context) {
-    getCompanyApi();
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: true,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
-        child: AppBar(
-          iconTheme: IconThemeData(
-            color: ThemeColors.lightBlue, //change your color here
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(50),
+            child: new Image(image: AssetImage('assets/images/logo.png')),
           ),
-          backgroundColor: Colors.white,
-          title: Text(
-            "Company Api",
-            style: TextStyle(color: ThemeColors.lightBlue),
-          ),
-        )
+          profileButton(new Icon(Icons.contacts), 'Service Book', 1),
+          profileButton(new Icon(Icons.contacts), 'Money Earning', 2),
+        ],
       ),
-      body: Padding(
-          padding: EdgeInsets.all(10),
-          child: Form(
-            key: _companyApiKey,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.fromLTRB(30, 0, 30, 10),
-                      child: new Image(image: AssetImage('assets/images/logo.png')),
-                      ),
-                    
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'CompanyApi'
-                      ),
-                    ),
-
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter api';
-                          }
-                          return null;
-                        },
-                        controller: emailController,
-                        decoration: InputDecoration(
-                        
-                          border: OutlineInputBorder(),
-                          labelText: 'Company Api.',
-                        ),
-                        onSaved: (value) => _companyapi = value,
-                      ),
-                    ),
-                    
-                    
-
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: RaisedButton(
-                          textColor: Colors.white,
-                          color: ThemeColors.lightBlue,
-                          child: Text('Add'),
-                          
-                          onPressed: () {
-                            if (_companyApiKey.currentState.validate()) {
-                              _companyApiKey.currentState.save();
-                              addCompanyApi();
-                            }
-                          },
-                        )),
-                    
-                  ],
-                ),
-          
-              )
-            ),
-            
-          ),
-          ),
     );
   }
+
+  Widget profileButton(Icon icon, String str, int buttonIndex)
+  {
+    return Container(  
+      padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
+      height: MediaQuery.of(context).size.height / 12,
+      child: new RaisedButton(
+        color: Colors.white,
+        onPressed: () {
+          switch (buttonIndex) {
+            case 1: 
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => StatisticsServiceBookPage()),
+              );   
+              break;
+            case 2:    
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MoneyEarningPage()),
+              );   
+              break;
+            default:
+          }
+        },
+        padding: EdgeInsets.all(8.0),
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                icon,
+                new Text('  ' + str),
+              ],
+            ),
+          )
+        ),
+      );
+  } 
 }

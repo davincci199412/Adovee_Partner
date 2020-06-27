@@ -14,6 +14,8 @@ class ThemeColors {
   static Color lightBlue = Color(0xff0078d4);
 }
 
+bool loading;
+
 class User {
   final int id;
   final String companyName;
@@ -85,18 +87,18 @@ var smtpServers;
 
 var statistics;
 
+var moneyearnings;
+
 var format = DateFormat("yyyy-MM-dd");
 
 Widget titleContentDescription(BuildContext context, String strTitle, String strContent)
   {
     return Container(   
-      //padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 8,
       decoration: BoxDecoration(
         
         color: Colors.white,
-        // border: Border.all(color: Colors.blueAccent),
         border: Border(bottom: BorderSide(color: Color(0xffaaaaaa)))
       ),
       child: Align(
@@ -202,7 +204,6 @@ Widget titleContentButton(BuildContext context, String strTitle, String strEmail
                   children: <Widget>[
                     CircleAvatar(
                       radius: MediaQuery.of(context).size.height / 24,
-                      //backgroundImage: AssetImage('assets/images/profile_logo.jpg'),
                     ),
                     
                     Padding(
@@ -273,3 +274,52 @@ Widget contentButton(BuildContext context, String strContent, String buttonType,
     );
   } 
   
+Widget bookingStatisticsDescription(BuildContext context, String strName, String strTotal, String strTotalCancel)
+  {
+    return Container(   
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 8,
+      decoration: BoxDecoration(
+        
+        color: Colors.white,
+        border: Border(bottom: BorderSide(color: Color(0xffaaaaaa)))
+      ),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Center(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(strName,
+                            style: Theme.of(context).textTheme.headline6.apply(
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(strTotal,
+                            style: TextStyle(color: ThemeColors.lightBlue),
+                          ),
+                          Text(strTotalCancel,
+                            
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ), 
+            
+          ), 
+              
+        )
+    );
+    
+  }

@@ -38,9 +38,6 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
   String initialCountry = 'NG';
   PhoneNumber number = PhoneNumber(isoCode: 'NG');
 
-  String _service;
-  String _book;
-
   String searchIndustry;
 
   Future<dynamic> addCustomerBooking() async {
@@ -60,12 +57,8 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
         'IsConditionAccepted': true
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -74,9 +67,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
       message = 'Booking Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
-      message = 'fail';
+      message = 'Fail';
     }
 
     Fluttertoast.showToast(
@@ -104,12 +95,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
         'CustomerId': widget.id,
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -118,9 +104,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
       message = 'Booking Cancel Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
-      message = 'fail';
+      message = 'Fail';
     }
 
     Fluttertoast.showToast(
@@ -149,12 +133,8 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
         'BookingTypeId': 0
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -163,8 +143,6 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
       message = 'Get Booking Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'fail';
     }
 
@@ -190,12 +168,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
 
       },
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -204,8 +177,6 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
       message = 'Delete Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'fail';
     }
 
@@ -228,10 +199,10 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -264,50 +235,6 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
                   ),
 
                   Container(
-                    padding: EdgeInsets.all(0),
-                    child: TextFormField(
-                      
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Service',
-                      ),
-
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter service';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _service = value,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(0),
-                    child: TextFormField(
-                      
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Book',
-                      ),
-
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter Book';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _book = value,
-                    ),
-                  ),
-                  
-                  SizedBox(
-                    height: 20
-                  ),
-
-                  Container(
                     width: MediaQuery.of(context).size.width,
                     height: 70,
                       padding: EdgeInsets.all(0),
@@ -317,7 +244,6 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
                         child: Text('Book now'),
                         onPressed: () {
                           if (_customerDetailKey.currentState.validate()) {
-                              // If the form is valid, display a Snackbar.
                               _customerDetailKey.currentState.save();
 
                               addCustomerBooking(); 

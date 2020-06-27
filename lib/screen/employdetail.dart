@@ -4,8 +4,6 @@ import 'package:adovee_partner/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
-import 'package:intl/intl.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -44,15 +42,11 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
         _startDate = picked[0];
         _endDate = picked[1];
       });
-      print(picked);
       
     }
   }
 
   String message;
-  String _service;
-  String _book;
-
   
   Future<dynamic> getEmployeeWorkingHours() async {
     final response = await http.get(
@@ -61,24 +55,11 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
     );
     if (response.statusCode == 200)
     {
-      print('getworkinghours');
-      print(json.decode(response.body));
       final body = json.decode(response.body);
-      print('____________________________________');
-      print(body);
-      // var body = json.decode(response.body);
-      // setState(() {
-      //   companyEmployees = body['employees'];
-      // });
-      //print(companyEmployees);
     }
     else 
     {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => OfflinePage()),
-      // );
+
     }
     return response;
   }
@@ -100,13 +81,6 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
       }),
     );
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => CustomerPage()),
-      // );
       message = 'Booking Success';
     }
     else {
@@ -135,8 +109,6 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
 
       },
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
       message = 'Delete Success';
@@ -165,10 +137,10 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -199,22 +171,6 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                       titleContentDescription(context, 'Email Address', companyEmployees[widget.id]['email']),
                       titleContentDescription(context, 'Mobile Number', companyEmployees[widget.id]['mobile']),
                       titleContentDescription(context, 'Created Date', companyEmployees[widget.id]['createdDate']),
-
-                      // DateTimeField(
-                      //   format: format,
-                      //   decoration: InputDecoration(
-                      //       border: OutlineInputBorder(),
-                      //       labelText: 'Service',
-                      //     ),
-                      //   initialValue: DateTime.now(),
-                      //   onShowPicker: (context, currentValue) {
-                      //     return showDatePicker(
-                      //         context: context,
-                      //         firstDate: DateTime(1900),
-                      //         initialDate: currentValue ?? DateTime.now(),
-                      //         lastDate: DateTime(2100));
-                      //   },
-                      // ),
 
                     ],
                   )

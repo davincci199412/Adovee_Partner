@@ -59,7 +59,6 @@ class _HomeState extends State<Home> {
         child = Profile();
         break;
     }
-    //return child;
 
     return Scaffold(
         body: SizedBox.expand(child: child),

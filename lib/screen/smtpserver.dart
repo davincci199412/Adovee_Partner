@@ -25,51 +25,16 @@ class _SmtpServerPageState extends State<SmtpServerPage> {
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
-      print('----------------smtp---------------------');
-      print(body);
-      // setState(() {
-      //   customers = body['customers'];
-      //   resultCustomers = customers;
-      // });
+      
     }
     else 
     {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => OfflinePage()),
-      // );
+
     }
     return response;
   }
 
-  // Future<dynamic> searchCustomers(String str) async {
-  //   final response = await http.get(
-  //     baseUrl + 'customer/searchcustomers?Query=' + str,
-  //     headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
-  //   );
-  //   print(response.statusCode);
-
-  //   if (response.statusCode == 200)
-  //   {
-  //     //print(json.decode(response.body));
-  //     var body = json.decode(response.body);
-  //     setState(() {
-  //       resultCustomers = body['customers'];
-  //     });
-  //     print(resultCustomers);
-  //   }
-  //   else 
-  //   {
-  //     // Navigator.push(
-  //     //   context,
-  //     //   MaterialPageRoute(
-  //     //       builder: (context) => OfflinePage()),
-  //     // );
-
-  //   }
-  //   return response;
-  // }
+  
 
   Widget searchBox()
   {
@@ -94,7 +59,6 @@ class _SmtpServerPageState extends State<SmtpServerPage> {
           ),
         ),
         onChanged: (value) {
-          // searchCustomers(value);
         },
       ),
     );   
@@ -103,11 +67,6 @@ class _SmtpServerPageState extends State<SmtpServerPage> {
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    // if (resultCustomers != null) {
-    //   for(var i = 0; i < resultCustomers.length; i++){
-    //     list.add(titleContentButton(context, resultCustomers[i]['fullName'], resultCustomers[i]['mobile'], 'customer',i));
-    //   }
-    // }
     
     return new ListView(children: list);
   }
@@ -118,10 +77,10 @@ class _SmtpServerPageState extends State<SmtpServerPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

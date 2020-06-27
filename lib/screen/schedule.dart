@@ -1,3 +1,5 @@
+import 'package:adovee_partner/screen/createbooking.dart';
+import 'package:adovee_partner/screen/scheduleconfiguration.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:adovee_partner/global.dart';
@@ -12,7 +14,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class SchedulePage extends StatefulWidget {
-  // ignore: prefer_const_constructors_in_immutables
   SchedulePage({Key key}) : super(key: key);
 
   @override
@@ -20,10 +21,35 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
+
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
   List<Meeting> meetings;
   DateTime selectedDate = DateTime.now();
   String message;
   int _selectedEmployee;
+
+  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return new WillPopScope(
+          onWillPop: () async => false,
+          child: SimpleDialog(
+              key: key,
+              backgroundColor: Colors.black54,
+              children: <Widget>[
+                Center(
+                  child: Column(children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 10,),
+                    Text("Please Wait....",style: TextStyle(color: Colors.blueAccent),)
+                  ]),
+                )
+              ]));
+      });
+  }
 
   Future<dynamic> getCompanyCalenders(int selectedEmployee, DateTime date) async {
     String strDate = format.format(date);
@@ -34,29 +60,17 @@ class _SchedulePageState extends State<SchedulePage> {
         HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
       },
     );
-    print('---------------------------------------------------');
-    print(response.statusCode);
-    print(baseUrl + 'schedule/getcompanycalenders?employeeId='+ selectedEmployee.toString() +'&date=' + strDate);
-    
     if (response.statusCode == 200) {
-      print(json.decode(response.body));
       var body = json.decode(response.body);
       employeeCalenders = body['employeeCalenders'];
+      if(employeeCalenders == null) loading = false;
+      else loading = true; 
       message = 'Get Company Calendar Success';
     }
     else {
       message = 'Get Company Calendar fail';
     }
 
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
     return response;
       
   }
@@ -68,69 +82,35 @@ class _SchedulePageState extends State<SchedulePage> {
       backgroundColor: ThemeColors.lightBlue,
       visible: true,
       curve: Curves.bounceIn,
-      tooltip: 'Change Company',
+      tooltip: 'Change',
       children: [
-            // FAB 1
         SpeedDialChild(
           child: Icon(Icons.verified_user),
           backgroundColor: ThemeColors.lightBlue,
           onTap: () { 
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => EditProfilePage()),
-            //   );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateBookingPage()),
+              );
           },
           label: 'Booking',
         ),
-        // FAB 2
         SpeedDialChild(
           child: Icon(Icons.confirmation_number),
           backgroundColor: ThemeColors.lightBlue,
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => CompanyApiPage()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ScheduleConfigurationPage()),
+            );
+            getScheduleRecurringIntervalDates();
           },
           label: 'Configuration',
         )
       ],
     );
-  }
-
-  Future<dynamic> getScheduleBookingByEmail(String email) async {
-    final http.Response response = await http.get(
-      baseUrl + 'schedule/getschedulebookingbyemail?email=' + email,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-
-      },
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      print(json.decode(response.body));
-      message = 'getScheduleBookingByEmail Success';
-    }
-    else {
-      message = 'getScheduleBookingByEmail fail';
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
   }
 
   Future<dynamic> getScheduleRecurringIntervalDates() async {
@@ -141,58 +121,25 @@ class _SchedulePageState extends State<SchedulePage> {
         HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
       },
       body: jsonEncode(<String, dynamic>{
-        'Username': 'string',
-        'ScheduleId': 0,
-        'ScheduleTitle': 'string',
-        'BookingId': 0,
-        'ServiceId': 0,
-        'CompanyId': 0,
-        'CustomerIds': 'string',
-        'CustomerId': 0,
-        'Startdate': '2020-06-24T01:04:27.759Z',
-        'EndDate': '2020-06-24T01:04:27.759Z',
-        'IsBooked': true,
-        'CompanyName': 'string',
-        'ServiceTitle': 'string',
-        'BookingType': 1,
-        'ICanceled': true,
-        'IsFullBooked': true,
-        'CancledCode': 'string',
-        'IsRecurring': true,
-        'IsReminder': true,
-        'RecurringDays': [
-          0
-        ],
-        'NumberOfPlaces': 0,
-        'IsConditionAccepted': true,
-        'ScheduleReminder': {
-          'ScheduleReminderTaskId': 0,
-          'BookingId': 0,
-          'CompanyId': 0,
-          'CustomerId': 0,
-          'Email': 'string',
-          'Mobile': 'string',
-          'ReminderDate': '2020-06-24T01:04:27.759Z',
-          'IsReminderSent': true
-        }
+        "BookingId": 5454,
+        "ScheduleId": 1123,
+        "ServiceId": 3212,
+        "StartDate": "2020-06-26T10:21:37.245Z",
+        "EndDate": "2020-06-26T10:21:37.245Z",
+        "BookingTypeId": 1,
+        "RecurringDays": [
+          0,
+          4
+        ]
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
+      final body = json.decode(response.body);
       message = 'getschedulerecurringintervaldates success';
     }
     else {
-      final body = json.decode(response.body);
-      message = body['message'];
+      message = 'Failed';
     }
 
     Fluttertoast.showToast(
@@ -257,252 +204,8 @@ class _SchedulePageState extends State<SchedulePage> {
         ]
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
-      message = 'getschedulerecurringintervaldates success';
-    }
-    else {
-      final body = json.decode(response.body);
-      message = body['message'];
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
-  }
-
-  Future<dynamic> addBookings() async {
-    final http.Response response = await http.post(
-      baseUrl + 'schedule/addbookings',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'EmployeeId': 0,
-        'ScheduleTitle': 'string',
-        'ServiceId': 0,
-        'ScheduleId': 0,
-        'Startdate': '2020-06-24T01:10:10.090Z',
-        'EndDate': '2020-06-24T01:10:10.090Z',
-        'BookingType': 0,
-        'IsRecurring': true,
-        'IsReminder': true,
-        'RecurringDays': [
-          0
-        ],
-        'NumberOfPlaces': 0,
-        'ReminderTask': {
-          'ReminderDate': '2020-06-24T01:10:10.090Z'
-        }
-      }),
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
-      message = 'addbooking success';
-    }
-    else {
-      final body = json.decode(response.body);
-      message = body['message'];
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
-  }
-
-  Future<dynamic> updateBooking() async {
-    final http.Response response = await http.post(
-      baseUrl + 'schedule/updatebooking',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'BookingId': 0,
-        'StartDate': '2020-06-24T01:12:30.643Z',
-        'EndDate': '2020-06-24T01:12:30.643Z'
-      }),
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
-      message = 'updatebooking success';
-    }
-    else {
-      final body = json.decode(response.body);
-      message = body['message'];
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
-  }
-
-  Future<dynamic> deleteBooking() async {
-    final http.Response response = await http.delete(
-      baseUrl + 'schedule/deletebooking/{bookingId}',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-
-      },
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => CustomerPage()),
-      // );
-      message = 'Delete Success';
-    }
-    else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
-      message = 'fail';
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
-  }
-  
-  Future<dynamic> getScheduleConfiguration() async {
-    final http.Response response = await http.post(
-      baseUrl + 'schedule/getscheduleconfiguration',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'ScheduleId': 0,
-        'HiddenDays': [
-          0
-        ],
-        'MinTime': 'string',
-        'MaxTime': 'string'
-      }),
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
-      message = 'setscheduleconfiguration success';
-    }
-    else {
-      final body = json.decode(response.body);
-      message = body['message'];
-    }
-
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: ThemeColors.lightBlue,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-    return response;
-      
-  }
-
-  Future<dynamic> setScheduleConfiguration() async {
-    final http.Response response = await http.post(
-      baseUrl + 'schedule/setscheduleconfiguration',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'ScheduleId': 0,
-        'Days': 'string',
-        'MinTime': 'string',
-        'MaxTime': 'string'
-      }),
-    );
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => EmployeePage()),
-      // );
-      message = 'setscheduleconfiguration success';
+      message = 'addBookingWithRemovedIntervalDays success';
     }
     else {
       final body = json.decode(response.body);
@@ -527,8 +230,6 @@ class _SchedulePageState extends State<SchedulePage> {
   List<DropdownMenuItem<dynamic>> buildDropDownMenuItems()
   {
     List<DropdownMenuItem<dynamic>> items = List();
-    print('ssssssssssssssssssssssssssss');
-    print(companyEmployees);
     if(companyEmployees != null)
     {
       for(int i = 0; i < companyEmployees.length; i ++)
@@ -539,7 +240,6 @@ class _SchedulePageState extends State<SchedulePage> {
             child: Text(companyEmployees[i]['firstName'] + ' ' + companyEmployees[i]['lastName'])
             ),
           );
-        print(items);
       }
     }
     return items;
@@ -549,7 +249,6 @@ class _SchedulePageState extends State<SchedulePage> {
   {
     setState(() {
       _selectedEmployee = selectedEmployee;
-      //getCompanyCalenders(_selectedEmployee, selectedDate);
     });
   }
 
@@ -561,22 +260,18 @@ class _SchedulePageState extends State<SchedulePage> {
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);      
-      companyEmployees = body['employees'];
-      if (companyEmployees != null)
+      
+      if (body != null)
       {
         setState(() {
-          _dropDownMenuItems = buildDropDownMenuItems(); 
+          companyEmployees = body['employees'];
         });
+        _dropDownMenuItems = buildDropDownMenuItems();
         getCompanyCalenders(_selectedEmployee, DateTime.now());
       }
     }
     else 
     {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => OfflinePage()),
-      // );
     }
     return response;
   }
@@ -593,7 +288,7 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       extendBody: true,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0), 
           child: AppBar(
             iconTheme: IconThemeData(
               color: Color(0xff0078d4), //change your color here
@@ -639,7 +334,7 @@ class _SchedulePageState extends State<SchedulePage> {
               format: format,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Start Date',
+                  labelText: 'Select Date',
                 ),
               initialValue: DateTime.now(),
               onShowPicker: (context, currentValue) {
@@ -657,29 +352,21 @@ class _SchedulePageState extends State<SchedulePage> {
 
           SfCalendar(
             view: CalendarView.day,
-            headerHeight: 0,
-            viewHeaderHeight: 0,
+            headerHeight: 50,
+            viewHeaderHeight: 50,
             initialDisplayDate: DateTime.now(),
             todayHighlightColor: Colors.red,
             dataSource: MeetingDataSource(_getDataSource()),
-            // by default the month appointment display mode set as Indicator, we can
-            // change the display mode as appointment using the appointment display mode
-            // property
             monthViewSettings: MonthViewSettings(
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                showAgenda: true,
-                agendaViewHeight: 100
-                ),
+              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+              showAgenda: true,
+              agendaViewHeight: 700
+              ),
           ),
         ],
       ),
       
       floatingActionButton: _getFAB(),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //     onPressed: () => _selectDate(context),
-      //     tooltip: 'Create client',
-      //   ),
     );
   }
 

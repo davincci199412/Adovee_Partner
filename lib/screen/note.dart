@@ -19,10 +19,10 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -57,7 +57,6 @@ class _NotePageState extends State<NotePage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: null,
                       maxLines: null,
-                      // controller: emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -73,9 +72,6 @@ class _NotePageState extends State<NotePage> {
                         color: Color(0xff0078d4),
                         child: Text('Done'),
                         onPressed: () {
-                          print(emailController.text);
-                          print(passwordController.text);
-
                           Navigator.push(
                               context,
                               MaterialPageRoute(

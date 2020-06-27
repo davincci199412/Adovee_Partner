@@ -48,9 +48,6 @@ class _CreateServicePageState extends State<CreateServicePage> {
         'CategoryId': _catagoryId
       }),
     );
-    print('===================create service===================');
-    print(response.statusCode);
-    
     if (response.statusCode == 200) {
       Navigator.push(
         context,
@@ -60,8 +57,6 @@ class _CreateServicePageState extends State<CreateServicePage> {
       message = 'Go to your email';
     }
     else {
-      // final body = json.decode(response.body);
-      // message = body['message'];
       message = 'failed';
 
     }
@@ -87,9 +82,6 @@ class _CreateServicePageState extends State<CreateServicePage> {
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
-      // print('------------------begin---------------------');
-      // print(body);
-      // print('------------------end---------------------');
     }
     else 
     {
@@ -109,10 +101,10 @@ class _CreateServicePageState extends State<CreateServicePage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -218,7 +210,6 @@ class _CreateServicePageState extends State<CreateServicePage> {
                       child: Text('Create'),
                       onPressed: () {
                         if (_createServiceKey.currentState.validate()) {
-                            // If the form is valid, display a Snackbar.
                             _createServiceKey.currentState.save();
 
                             addService(); 

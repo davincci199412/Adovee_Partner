@@ -47,25 +47,17 @@ class _CustomerPageState extends State<CustomerPage> {
       baseUrl + 'customer/searchcustomers?Query=' + str,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
-    print(response.statusCode);
 
     if (response.statusCode == 200)
     {
-      //print(json.decode(response.body));
       var body = json.decode(response.body);
       setState(() {
         resultCustomers = body['customers'];
       });
-      print(resultCustomers);
     }
     else 
     {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => OfflinePage()),
-      // );
-
+      
     }
     return response;
   }
@@ -117,10 +109,10 @@ class _CustomerPageState extends State<CustomerPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

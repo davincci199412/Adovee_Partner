@@ -33,7 +33,6 @@ class _CompanyPageState extends State<CompanyPage> {
     {
       var body = json.decode(response.body);
       smsBalance = body['balance'];
-      // print(smsBalance);
     }
     else 
     {
@@ -56,8 +55,6 @@ class _CompanyPageState extends State<CompanyPage> {
     {
       var body = json.decode(response.body);
       setState(() {
-        print('------------------------------------');
-        print(body);
         employees = body['employees'];
       });
     }
@@ -81,7 +78,6 @@ class _CompanyPageState extends State<CompanyPage> {
       curve: Curves.bounceIn,
       tooltip: 'Change Company',
       children: [
-            // FAB 1
         SpeedDialChild(
           child: Icon(Icons.verified_user),
           backgroundColor: ThemeColors.lightBlue,
@@ -94,7 +90,6 @@ class _CompanyPageState extends State<CompanyPage> {
           },
           label: 'Update Company',
         ),
-        // FAB 2
         SpeedDialChild(
           child: Icon(Icons.add),
           backgroundColor: ThemeColors.lightBlue,
@@ -181,7 +176,6 @@ class _CompanyPageState extends State<CompanyPage> {
                   children: <Widget>[
                     CircleAvatar(
                       radius: MediaQuery.of(context).size.height / 24,
-                      //backgroundImage: AssetImage('assets/images/profile_logo.jpg'),
                     ),
                     
                     Padding(
@@ -209,14 +203,13 @@ class _CompanyPageState extends State<CompanyPage> {
   @override
   Widget build(BuildContext context) {
     getCompanyEmployees();
-    //getCompanyApi();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(

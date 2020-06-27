@@ -30,7 +30,6 @@ class _CreateClientPageState extends State<CreateClientPage> {
     );
     if (response.statusCode == 200)
     {
-      // print(json.decode(response.body));
       employees = json.decode(response.body);
     }
     else 
@@ -50,10 +49,10 @@ class _CreateClientPageState extends State<CreateClientPage> {
     getSmsBalanceByCompanyId();
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -101,10 +100,8 @@ class _CreateClientPageState extends State<CreateClientPage> {
                     padding: EdgeInsets.all(10),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
                       },
                       onInputValidated: (bool value) {
-                        print(value);
                       },
                       ignoreBlank: false,
                       autoValidate: false,
@@ -183,8 +180,6 @@ class _CreateClientPageState extends State<CreateClientPage> {
                       color: Color(0xff0078d4),
                       child: Text('Save'),
                       onPressed: () {
-                        print(nameController.text);
-                        print(passwordController.text);
                       },
                     )),
               ],
@@ -193,7 +188,6 @@ class _CreateClientPageState extends State<CreateClientPage> {
           ),
           ),
 
-        //bottomNavigationBar: FooterBar(),
       );
   }
 }

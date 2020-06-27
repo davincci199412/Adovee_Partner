@@ -2,12 +2,9 @@ import 'package:adovee_partner/global.dart';
 import 'package:adovee_partner/screen/createemployee.dart';
 import 'package:adovee_partner/screen/home.dart';
 import 'package:adovee_partner/screen/offline.dart';
-import 'package:adovee_partner/screen/workinghour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -31,7 +28,6 @@ class _EmployeePageState extends State<EmployeePage> {
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
-      print(body);
       setState(() {
         companyEmployees = body['employees'];
       });
@@ -46,47 +42,6 @@ class _EmployeePageState extends State<EmployeePage> {
     }
     return response;
   }
-
-  Widget _getFAB() {
-    return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
-      animatedIconTheme: IconThemeData(size: 22),
-      backgroundColor: ThemeColors.lightBlue,
-      visible: true,
-      curve: Curves.bounceIn,
-      tooltip: 'Change Company',
-      children: [
-            // FAB 1
-        SpeedDialChild(
-          child: Icon(Icons.verified_user),
-          backgroundColor: ThemeColors.lightBlue,
-          onTap: () { 
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WorkingHourPage()),
-              );
-          },
-          label: 'Update Company',
-        ),
-        // FAB 2
-        SpeedDialChild(
-          child: Icon(Icons.add),
-          backgroundColor: ThemeColors.lightBlue,
-          onTap: () {
-              setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CreateEmployeePage()),
-                );
-              });
-          },
-        )
-      ],
-    );
-  }
-
 
   Widget searchBox()
   {
@@ -133,10 +88,10 @@ class _EmployeePageState extends State<EmployeePage> {
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -160,7 +115,6 @@ class _EmployeePageState extends State<EmployeePage> {
           },
           tooltip: 'Create employee',
           ),
-        // floatingActionButton: _getFAB(),
         
       ), 
       onWillPop: () async {

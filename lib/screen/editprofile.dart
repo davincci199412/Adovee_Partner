@@ -73,9 +73,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         'Mobile': _mobile,
       }),
     );
-    //final body = json.decode(response.body);
-    print(response.statusCode);
-    // print(json.decode(response.headers));
     if (response.statusCode == 200) {
       
       Navigator.push(
@@ -108,10 +105,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: Colors.white,
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xFF222E36), //change your color here
+              color: Color(0xFF222E36),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -171,11 +168,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         padding: EdgeInsets.all(10),
                         child: InternationalPhoneNumberInput(
                           onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
                             _mobile = number.phoneNumber;
                           },
                           onInputValidated: (bool value) {
-                            print(value);
                           },
                           ignoreBlank: false,
                           autoValidate: false,
@@ -215,9 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             color: Colors.blue,
                             child: Text('Save'),
                             onPressed: () {
-                              //showDialog();
                               if (_editProfilePageKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
                                 _editProfilePageKey.currentState.save();
 
                                 updateCompanyDetails();

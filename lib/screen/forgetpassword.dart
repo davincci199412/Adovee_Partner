@@ -29,12 +29,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       }),
     );
     
-    //print(json.decode(response.body));
-    print(response.statusCode);
-    
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -65,10 +60,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -122,7 +117,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             child: Text('Send'),
                             onPressed: () {
                               if (_forgotPasswordKey.currentState.validate()) {
-                                  // If the form is valid, display a Snackbar.
                                   _forgotPasswordKey.currentState.save();
 
                                   forgotPassword();

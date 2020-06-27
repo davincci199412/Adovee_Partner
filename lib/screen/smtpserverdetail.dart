@@ -47,13 +47,8 @@ class _SmtpServerUpdatePageState extends State<SmtpServerUpdatePage> {
         'SmtpPort': _port
       }),
     );
-    //print(json.decode(response.body));
-    print('-0--------------------------------------------0-');
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -63,8 +58,6 @@ class _SmtpServerUpdatePageState extends State<SmtpServerUpdatePage> {
       message = 'Service update success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'Service update failed';
     }
 
@@ -87,10 +80,10 @@ class _SmtpServerUpdatePageState extends State<SmtpServerUpdatePage> {
         backgroundColor: Colors.white,
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xFF222E36), //change your color here
+              color: Color(0xFF222E36),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -210,12 +203,8 @@ class _SmtpServerUpdatePageState extends State<SmtpServerUpdatePage> {
                             color: Colors.blue,
                             child: Text('Save'),
                             onPressed: () {
-                              //showDialog();
                               if (_smtpServerUpdateKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
                                 _smtpServerUpdateKey.currentState.save();
-
-                                // updateCompanyDetails();
                                 setSmtpServer();
                               }
                             },

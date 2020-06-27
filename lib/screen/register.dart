@@ -40,8 +40,7 @@ class _RegisterState extends State<Register> {
   String _mobile;
   String searchIndustry;
 
-  var items = ['Working a lot harder', 'Being a lot smarter', 'Being a self-starter', 'Placed in charge of trading charter'];
-  //var items = [];
+  var items = ['Industry', 'Smart', 'Starter', 'Trade'];
   Future<dynamic> filterIndustry(String str) async {
     final response = await http.get(
       baseUrl + 'account/filterindustry?query=' + str,
@@ -50,14 +49,9 @@ class _RegisterState extends State<Register> {
     final industrybody = json.decode(response.body);
     if (response.statusCode == 200) {
       var resultIndustry = industrybody['searchResult'];
-      print(resultIndustry);
-      // items = resultIndustry.OfType<String>().ToList();
-      //items = resultIndustry;
       _industryId = 1;
     } else {
-      print('Request failed with status: ${response.statusCode}.');
     }
-    print(response.statusCode);
     return response;
   }
 
@@ -78,12 +72,8 @@ class _RegisterState extends State<Register> {
         'IndustryId': _industryId
       }),
     );
-    print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -115,10 +105,10 @@ class _RegisterState extends State<Register> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -178,17 +168,14 @@ class _RegisterState extends State<Register> {
                   padding: EdgeInsets.all(10),
                   child: InternationalPhoneNumberInput(
                     onInputChanged: (PhoneNumber number) {
-                      print(number.phoneNumber);
                       _mobile = number.phoneNumber;
                     },
                     onInputValidated: (bool value) {
-                      print(value);
                     },
                     ignoreBlank: false,
                     autoValidate: false,
                     selectorTextStyle: TextStyle(color: Colors.black),
                     initialValue: number,
-                    textFieldController: controller,
                     inputBorder: OutlineInputBorder(),
                   ),
                 ),
@@ -288,16 +275,12 @@ class _RegisterState extends State<Register> {
                             return null;
                           },
                           onChanged: (value) {
-                            print(value);
-                            // filterIndustry(value);
                           },
-                          // onSaved: (value) => _confirm = value,
                         ),
                       ),
                       new PopupMenuButton<String>(
                         icon: const Icon(Icons.arrow_drop_down),
                         onSelected: (String value) {
-                          //print(value);
                           searchIndustry = value;
                           controller.text = value;
                         },
@@ -322,7 +305,6 @@ class _RegisterState extends State<Register> {
                       child: Text('Sign up'),
                       onPressed: () {
                         if (_registerKey.currentState.validate()) {
-                            // If the form is valid, display a Snackbar.
                             _registerKey.currentState.save();
 
                             register(); 

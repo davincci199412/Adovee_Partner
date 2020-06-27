@@ -58,12 +58,8 @@ class _CreateEmployeePageState extends State<CreateEmployeePage> {
         'Confirm': _confirm,
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -95,10 +91,10 @@ class _CreateEmployeePageState extends State<CreateEmployeePage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -158,11 +154,9 @@ class _CreateEmployeePageState extends State<CreateEmployeePage> {
                   padding: EdgeInsets.all(10),
                   child: InternationalPhoneNumberInput(
                     onInputChanged: (PhoneNumber number) {
-                      print(number.phoneNumber);
                       _mobile = number.phoneNumber;
                     },
                     onInputValidated: (bool value) {
-                      print(value);
                     },
                     ignoreBlank: false,
                     autoValidate: false,
@@ -242,7 +236,6 @@ class _CreateEmployeePageState extends State<CreateEmployeePage> {
                       child: Text('Create'),
                       onPressed: () {
                         if (_createAccountKey.currentState.validate()) {
-                            // If the form is valid, display a Snackbar.
                             _createAccountKey.currentState.save();
 
                             createAccount(); 

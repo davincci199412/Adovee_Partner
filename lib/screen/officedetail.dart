@@ -34,7 +34,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
   String confirmedNumber = '';
   String message;
 
-  // var _currencies = ['Rup', 'sdf', 'ertg'];
   int _selectedEmployee;
 
   var officeEmployees;
@@ -43,8 +42,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
   List<DropdownMenuItem<dynamic>> buildDropDownMenuItems()
   {
     List<DropdownMenuItem<dynamic>> items = List();
-    print('ssssssssssssssssssssssssssss');
-    print(companyEmployees);
     if(companyEmployees != null)
     {
       for(int i = 0; i < companyEmployees.length; i ++)
@@ -55,7 +52,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
             child: Text(companyEmployees[i]['firstName'] + ' ' + companyEmployees[i]['lastName'])
             ),
           );
-        print(items);
       }
     }
     return items;
@@ -81,12 +77,8 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
         'BranchOfficeId': offices[widget.id]['branchOfficeId'],
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -95,8 +87,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
       message = 'Booking Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'fail';
     }
 
@@ -122,25 +112,13 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
 
       },
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-     
       var body = json.decode(response.body);
       if(body != null) officeEmployees = body['offices'];
-
-      print('-----------------start---------------------');
-      print(officeEmployees);
-      print('-------------------end------------------------');
-    
       message = 'Get office Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'fail';
     }
 
@@ -165,9 +143,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
     if (response.statusCode == 200)
     {
       var body = json.decode(response.body);
-      print('------------------begin---------------------');
-      print(body);
-      print('------------------end---------------------');
       
       companyEmployees = body['employees'];
       if (companyEmployees != null)
@@ -210,10 +185,10 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -242,25 +217,11 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
                   titleContentDescription(context, 'ZipCode', offices[widget.id]['zipCode']),
                   titleContentDescription(context, 'Area', offices[widget.id]['area']),
 
-                  // titleContentDescription(context, 'NavigationMapLink', offices[widget.id]['navigationMapLink']),
 
                   SizedBox(
                     height: 20
                   ),
                   
-                  // DropdownButton<String>(
-
-                  //   items: _currencies.map((String dropDownStringItem) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: dropDownStringItem,
-                  //       child: Text(dropDownStringItem),
-                  //     ); 
-                  //   }).toList(),
-
-                  //   onChanged: (String value) {
-                      
-                  //   },
-                  // ),
                   Container(
                     padding: EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width,
@@ -285,9 +246,6 @@ class _OfficeDetailPageState extends State<OfficeDetailPage> {
                           assignEmployeeToOffice();
                         },
                       )),
-                  // SizedBox(
-                  //   height: 20
-                  // ),
                 ],
               )
             ),

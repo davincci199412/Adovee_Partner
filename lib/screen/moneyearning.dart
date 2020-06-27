@@ -1,4 +1,3 @@
-import 'package:adovee_partner/screen/workinghour.dart';
 import 'package:flutter/material.dart';
 import 'package:adovee_partner/global.dart';
 
@@ -10,49 +9,39 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-class CreateWorkingHourPage extends StatefulWidget {
-  final int id;
-
-  const CreateWorkingHourPage({Key key, this.id}) : super(key: key);
-  
+class MoneyEarningPage extends StatefulWidget {
   @override
-  _CreateWorkingHourPageState createState() => _CreateWorkingHourPageState();
+  _MoneyEarningPageState createState() => _MoneyEarningPageState();
 }
  
-class _CreateWorkingHourPageState extends State<CreateWorkingHourPage> {
+class _MoneyEarningPageState extends State<MoneyEarningPage> {
  
-  final GlobalKey<FormState> _createWorkingHourKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _moneyEarningKey = GlobalKey<FormState>();
 
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now().add(Duration(days: 7));
-  String _note = 'asdasad';
 
   String message;
-   Future<dynamic> addWorkingHours() async {
-    final http.Response response = await http.post(
-      baseUrl + 'employee/addworkinghours',
+  
+  Future<dynamic> moneyEarning() async {
+    final http.Response response = await http.get(
+      baseUrl + 'statistics/moneyearnings?startDate=' + format.format(_startDate) + '&endDate=' +format.format(_endDate),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
 
       },
-      body: jsonEncode(<String, dynamic>{
-        'EmployeeId': companyEmployees[widget.id]['employeeId'],
-        'StartDate': _startDate.toString(),
-        'EndDate': _endDate.toString(),
-        'Note': _note,
-      }),
     );
+    
     if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WorkingHourPage(id: widget.id,)),
-      );
-      message = 'Booking Success';
+      setState(() {
+        var body = json.decode(response.body);
+        if(body != null) moneyearnings = body['earnings'];
+      });
+      message = 'Money earning success';
     }
     else {
-      message = 'Fail';
+      message = 'Money earning failed';
     }
 
     Fluttertoast.showToast(
@@ -65,11 +54,23 @@ class _CreateWorkingHourPageState extends State<CreateWorkingHourPage> {
         fontSize: 16.0
       );
     return response;
+      
   }
 
-  
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Widget earningList(Widget widget)
+  {
+    if(moneyearnings != null) return widget;
+    else return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    moneyEarning();
     return Scaffold(
         
         backgroundColor: Colors.white,
@@ -82,14 +83,14 @@ class _CreateWorkingHourPageState extends State<CreateWorkingHourPage> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Create Working Hour",
+              "Money Earning",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
         ),
         body: SafeArea(
           child: Form(
-            key: _createWorkingHourKey,
+            key: _moneyEarningKey,
             child: Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -118,6 +119,10 @@ class _CreateWorkingHourPageState extends State<CreateWorkingHourPage> {
                           },
                           onChanged: (value) {
                             _startDate = value;
+                            if (_moneyEarningKey.currentState.validate()) {
+                                _moneyEarningKey.currentState.save();
+                                moneyEarning();
+                              }
                           },
                         ),
                       ),
@@ -140,48 +145,19 @@ class _CreateWorkingHourPageState extends State<CreateWorkingHourPage> {
                           },
                           onChanged: (value) {
                             _endDate = value;
-                          },
-                        ),
-                      ),
-
-                       Container(
-                        padding: EdgeInsets.all(10),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter note';
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.multiline,
-                          maxLength: null,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                          
-                            border: OutlineInputBorder(),
-                            labelText: 'Note',
-                          ),
-                          onSaved: (value) => _note = value,
-                        ),
-                      ),
-                                            
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 70,
-                          padding: EdgeInsets.all(10),
-                          child: RaisedButton(
-                            textColor: Colors.white,
-                            color: Colors.blue,
-                            child: Text('Add'),
-                            onPressed: () {
-                              if (_createWorkingHourKey.currentState.validate()) {
-                                _createWorkingHourKey.currentState.save();
-                                
-                                addWorkingHours();
-
+                            if (_moneyEarningKey.currentState.validate()) {
+                                _moneyEarningKey.currentState.save();
+                                moneyEarning();
                               }
-                            },
-                          )),
+                          },
+                        ),
+                      ),
+                      
+                      earningList(titleContentDescription(context, 'Booking', moneyearnings['stats']['bookings'].toString())),
+                      earningList(titleContentDescription(context, 'Canelations', moneyearnings['stats']['canelations'].toString())),
+                      earningList(titleContentDescription(context, 'CaneclationLoss', moneyearnings['stats']['caneclationLoss'].toString())),
+                      earningList(titleContentDescription(context, 'EarningsWithCancelation', moneyearnings['stats']['earningsWithCancelation'].toString())),
+                      earningList(titleContentDescription(context, 'ActualEarnings', moneyearnings['stats']['actualEarnings'].toString())),
                     ],
                   ),
                 ),

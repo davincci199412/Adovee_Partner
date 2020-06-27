@@ -27,9 +27,6 @@ class _CreateServiceCategoryPageState extends State<CreateServiceCategoryPage> {
 
   String _categoryName;
 
-  // var items = ['Working a lot harder', 'Being a lot smarter', 'Being a self-starter', 'Placed in charge of trading charter'];
-  //var items = [];
-  
   Future<dynamic> addServiceCategory() async {
     final http.Response response = await http.post(
       baseUrl + 'service/addservicecategory',
@@ -43,8 +40,6 @@ class _CreateServiceCategoryPageState extends State<CreateServiceCategoryPage> {
     );
     
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -53,8 +48,6 @@ class _CreateServiceCategoryPageState extends State<CreateServiceCategoryPage> {
       message = 'Success';
     }
     else {
-      final body = json.decode(response.body);
-      //message = body['message'];
       message = 'Failed';
     }
 
@@ -77,10 +70,10 @@ class _CreateServiceCategoryPageState extends State<CreateServiceCategoryPage> {
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -135,7 +128,6 @@ class _CreateServiceCategoryPageState extends State<CreateServiceCategoryPage> {
                             child: Text('Add Service Category'),
                             onPressed: () {
                               if (_addServiceCategoryKey.currentState.validate()) {
-                                  // If the form is valid, display a Snackbar.
                                   _addServiceCategoryKey.currentState.save();
                                   addServiceCategory();
                                 }

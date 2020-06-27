@@ -1,10 +1,8 @@
-import 'package:adovee_partner/screen/servicecategory.dart';
 import 'package:flutter/material.dart';
 import 'package:adovee_partner/global.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'dart:io';
@@ -34,8 +32,6 @@ class _WorkingHourDetailPageState extends State<WorkingHourDetailPage> {
 
       },
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
       message = 'Delete Success';
@@ -97,7 +93,6 @@ class _WorkingHourDetailPageState extends State<WorkingHourDetailPage> {
                               border: OutlineInputBorder(),
                               labelText: 'Start Date',
                             ),
-                          // initialValue: workinghours[widget.id]['startDate'],
                           initialValue: DateTime.parse(workinghours[widget.id]['startDate']),
                           onShowPicker: (context, currentValue) {
                             return showDatePicker(
@@ -138,7 +133,6 @@ class _WorkingHourDetailPageState extends State<WorkingHourDetailPage> {
                             child: Text('Delete'),
                             onPressed: () {
                               if (_workingHourDetailPageKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
                                 _workingHourDetailPageKey.currentState.save();
                                 
                                 deleteWorkingHours();

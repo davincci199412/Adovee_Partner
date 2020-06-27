@@ -22,16 +22,12 @@ class _FaqPageState extends State<FaqPage> {
       baseUrl + 'faq/getfaq',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
     );
-    print(response.statusCode);
 
     if (response.statusCode == 200)
     {
-      //print(json.decode(response.body));
       var body = json.decode(response.body);
       setState(() {
         faqs = body;
-        // print('00000000000000000000000000000000000');
-        // print(faqs);
       });
     }
     else 
@@ -44,33 +40,6 @@ class _FaqPageState extends State<FaqPage> {
     }
     return response;
   }
-
-  // Future<dynamic> searchCustomers(String str) async {
-  //   final response = await http.get(
-  //     baseUrl + 'customer/searchcustomers?Query=' + str,
-  //     headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
-  //   );
-  //   print(response.statusCode);
-
-  //   if (response.statusCode == 200)
-  //   {
-  //     //print(json.decode(response.body));
-  //     var body = json.decode(response.body);
-  //     setState(() {
-  //       resultCustomers = body['customers'];
-  //     });
-  //   }
-  //   else 
-  //   {
-  //     // Navigator.push(
-  //     //   context,
-  //     //   MaterialPageRoute(
-  //     //       builder: (context) => OfflinePage()),
-  //     // );
-
-  //   }
-  //   return response;
-  // }
 
   Widget searchBox()
   {
@@ -95,7 +64,6 @@ class _FaqPageState extends State<FaqPage> {
           ),
         ),
         onChanged: (value) {
-          // searchCustomers(value);
         },
       ),
     );   
@@ -104,11 +72,6 @@ class _FaqPageState extends State<FaqPage> {
   {
     List<Widget> list = new List<Widget>();
     list.add(searchBox());
-    // if (resultCustomers != null) {
-    //   for(var i = 0; i < resultCustomers.length; i++){
-    //     list.add(titleContentButton(context, resultCustomers[i]['fullName'], resultCustomers[i]['mobile'], 'customer',i));
-    //   }
-    // }
     
     return new ListView(children: list);
   }
@@ -119,10 +82,10 @@ class _FaqPageState extends State<FaqPage> {
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -138,12 +101,6 @@ class _FaqPageState extends State<FaqPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => CreateCustomerPage()),
-            // );
-
           },
           tooltip: 'Create customer',
           ),

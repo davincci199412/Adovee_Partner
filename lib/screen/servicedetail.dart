@@ -43,8 +43,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
         'Price': _price
       }),
     );
-    //print(json.decode(response.body));
-    print(response.statusCode);
     
     if (response.statusCode == 200) {
       message = 'Service update success';
@@ -55,8 +53,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
       );
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'Service update failed';
     }
 
@@ -91,8 +87,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
       message = 'Delete Success';
     }
     else {
-      //final body = json.decode(response.body);
-      // message = body['message'];
       message = 'fail';
     }
 
@@ -116,10 +110,10 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
         backgroundColor: Colors.white,
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0), 
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xFF222E36), //change your color here
+              color: Color(0xFF222E36), 
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -190,9 +184,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                             color: Colors.blue,
                             child: Text('Update'),
                             onPressed: () {
-                              //showDialog();
                               if (_serviceDetailPageKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
                                 _serviceDetailPageKey.currentState.save();
                                 updateService();
                               }

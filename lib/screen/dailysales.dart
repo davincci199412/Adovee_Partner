@@ -14,10 +14,10 @@ class _DailySalesPageState extends State<DailySalesPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4), //change your color here
+              color: Color(0xff0078d4),
             ),
             backgroundColor: Colors.white,
             title: Text(
@@ -44,11 +44,7 @@ class _DailySalesPageState extends State<DailySalesPage> {
           ),
           
           transactionSummaryTable()
-          // salesButton(new Icon(Icons.lightbulb_outline, size: 30,), 'Daily Sales', 'See daily totals of sales made and payments collected', 0),
-          // salesButton(new Icon(Icons.lightbulb_outline, size: 30,), 'Appointments', 'List of all appointments booked, with filter and export options', 1),
-          // salesButton(new Icon(Icons.lightbulb_outline, size: 30,), 'Invoices', 'List of all sales made, with filter and export options', 2),
-          // salesButton(new Icon(Icons.lightbulb_outline, size: 30,), 'Vouchers', 'List of all vouchers issued with filter and export options', 3),
-        ],
+          ],
       ),
     );
   }
@@ -112,7 +108,6 @@ class _DailySalesPageState extends State<DailySalesPage> {
             padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
             height: MediaQuery.of(context).size.height / 8,
             decoration: BoxDecoration(
-              // border: Border.all(color: Colors.blueAccent),
               color: Color(0xffeeeeee),
               border: Border(bottom: BorderSide(color: Color(0xff888888)))
             ),

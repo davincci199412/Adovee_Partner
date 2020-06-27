@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adovee_partner/screen/login.dart';
 import 'package:adovee_partner/screen/register.dart';
-//import 'package:adovee/widget/facebooksignin.dart';
 
 class LoginDetailPage extends StatefulWidget {
   @override
@@ -44,9 +43,6 @@ class _LoginDetailPageState extends State<LoginDetailPage> {
                         style: TextStyle(fontSize: 16),
                         ),
                       onPressed: () {
-                        print(nameController.text);
-                        print(passwordController.text);
-
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -67,14 +63,6 @@ class _LoginDetailPageState extends State<LoginDetailPage> {
                         style: TextStyle(fontSize: 16),
                         ),
                       onPressed: () {
-                        print(nameController.text);
-                        print(passwordController.text);
-
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Register()),
-                        //   );
                       },
                     )),
 
@@ -90,14 +78,6 @@ class _LoginDetailPageState extends State<LoginDetailPage> {
                         style: TextStyle(fontSize: 16),
                         ),
                       onPressed: () {
-                        print(nameController.text);
-                        print(passwordController.text);
-
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Register()),
-                        //   );
                       },
                     )),
 
@@ -121,7 +101,6 @@ class _LoginDetailPageState extends State<LoginDetailPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    //signup screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(

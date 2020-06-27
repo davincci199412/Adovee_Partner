@@ -1,7 +1,6 @@
 import 'package:adovee_partner/global.dart';
 import 'package:adovee_partner/screen/createcustomer.dart';
 import 'package:adovee_partner/screen/home.dart';
-import 'package:adovee_partner/screen/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -10,35 +9,80 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-class ProductPage extends StatefulWidget {
+import 'package:fluttertoast/fluttertoast.dart';
+
+class ScheduleConfigurationPage extends StatefulWidget {
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _ScheduleConfigurationPageState createState() => _ScheduleConfigurationPageState();
 }
  
-class _ProductPageState extends State<ProductPage> {
+class _ScheduleConfigurationPageState extends State<ScheduleConfigurationPage> {
+
   TextEditingController _searchController = TextEditingController();
-  
-  Future<dynamic> getProduct() async {
-    final response = await http.get(
-      baseUrl + 'product/getproduct',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token},
+  String message;
+
+  Future<dynamic> getScheduleConfiguration() async {
+    final http.Response response = await http.get(
+      baseUrl + 'schedule/getscheduleconfiguration',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
+      },
     );
-    if (response.statusCode == 200)
-    {
-      var body = json.decode(response.body);
-      setState(() {
-        products = body['product'];
-      });
+    
+    if (response.statusCode == 200) {
+      message = 'getscheduleconfiguration success';
     }
-    else 
-    {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OfflinePage()),
+    else {
+      message = 'Fail';
+    }
+
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: ThemeColors.lightBlue,
+        textColor: Colors.white,
+        fontSize: 16.0
       );
-    }
     return response;
+      
+  }
+
+  Future<dynamic> setScheduleConfiguration() async {
+    final http.Response response = await http.post(
+      baseUrl + 'schedule/setscheduleconfiguration',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer '+ currentUser.token,
+      },
+      body: jsonEncode(<String, dynamic>{
+        'ScheduleId': 5,
+        'Days': '15',
+        'MinTime': '0',
+        'MaxTime': '5'
+      }),
+    );
+    if (response.statusCode == 200) {
+      
+      message = 'setscheduleconfiguration success';
+    }
+    else {
+      message = 'setscheduleconfiguration failed.';
+    }
+
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: ThemeColors.lightBlue,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
+    return response;
+      
   }
 
   Widget searchBox()
@@ -71,30 +115,24 @@ class _ProductPageState extends State<ProductPage> {
   Widget productList(BuildContext context)
   {
     List<Widget> list = new List<Widget>();
-    list.add(searchBox());
-    if (products != null) {
-      for(var i = 0; i < products.length; i++){
-        list.add(contentButton(context, products[i]['categoryName'], 'product',i));
-      }
-    }
     
     return new ListView(children: list);
   }
 
   @override
   Widget build(BuildContext context) {
-    getProduct();
+    getScheduleConfiguration();
     return WillPopScope(
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0),
           child: AppBar(
             iconTheme: IconThemeData(
-              color: Color(0xff0078d4),
+              color: Color(0xff0078d4), 
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "Product",
+              "Schedule Configuration",
               style: TextStyle(color: Color(0xff0078d4)),
             ),
           )
@@ -120,7 +158,7 @@ class _ProductPageState extends State<ProductPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Home(current: 4)),
+              builder: (context) => Home(current: 0)),
         );
 
         return false;

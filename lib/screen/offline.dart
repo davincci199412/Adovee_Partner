@@ -46,9 +46,6 @@ class _OfflinePageState extends State<OfflinePage> {
                         color: Color(0xff0078d4),
                         child: Text('Go to Home'),
                         onPressed: () {
-                          print(emailController.text);
-                          print(passwordController.text);
-
                           Navigator.push(
                               context,
                               MaterialPageRoute(
